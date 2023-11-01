@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "month_dt": "202009",
+            "hubid": 1028,
+            "name": "老街",
+            "hid": 3,
+            "version": "1000",
+            "quantityindex": 70,
+            "qualityindex": 20,
+            "compositeindex": 45
+        },
+        {
+            "month_dt": "202009",
+            "hubid": 4006,
+            "name": "深圳北",
+            "hid": 4,
+            "version": "1000",
+            "quantityindex": 40,
+            "qualityindex": 76,
+            "compositeindex": 58
+        },
+        {
+            "month_dt": "202009",
+            "hubid": 5024,
+            "name": "坂田",
+            "hid": 5,
+            "version": "1000",
+            "quantityindex": 35,
+            "qualityindex": 46,
+            "compositeindex": 40.5
+        },
+        {
+            "month_dt": "202009",
+            "hubid": 2021,
+            "name": "福田",
+            "hid": 2,
+            "version": "1000",
+            "quantityindex": 80,
+            "qualityindex": 86,
+            "compositeindex": 83
+        },
+        {
+            "month_dt": "202009",
+            "hubid": 6001,
+            "name": "松岗",
+            "hid": 6,
+            "version": "1000",
+            "quantityindex": 42,
+            "qualityindex": 36,
+            "compositeindex": 39
+        },
+        {
+            "month_dt": "202009",
+            "hubid": 1019,
+            "name": "竹子林",
+            "hid": 1,
+            "version": "1000",
+            "quantityindex": 24,
+            "qualityindex": 28,
+            "compositeindex": 126
+        }
+    ];
+    let seriesData = newData.map(function (item, index, array) {
+        return {
+            name: item["name"],
+            //实际点的参数
+            value: [item["quantityindex"], item["qualityindex"], item['compositeindex']],
+        };
+    });
+    let colorList = ['#4f8bc8', "#0f4382", "#43a1d0", "#3387c3", "#0052a3", "#6889d4", "#2479c6", "#3461b9", "#4c4bb4", "#2239ad", "#006ecd", "#074b83", "#3d6aac", "#3698ba", "#0a58b6"]
+
+    let option = {
+        tooltip: {
+            confine: true,
+            // position: 'right',
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1)',
+            trigger: "item",
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (obj) {
+                console.log(obj, 'xxx');
+                if (obj.componentType == "series") {
+                    return `<div style="color:#ffff;padding:0 5px 0 5px;">
+                        <p style="line-height:20px;color:#ffff;">${obj.marker} 区<span style="margin-left:28px;">域: </span><span style="font-family:dinc;margin-left:10px;font-size:15px">${obj.name}</span></p>
+                        <p  style="line-height:20px;color:#ffff;">${obj.marker} 数量指数: <span style="font-family:dinc;margin-left:10px;font-size:18px">${obj.value[0]}</span></p>
+                        <p  style="line-height:20px;color:#ffff;">${obj.marker} 质量指数: <span style="font-family:dinc;margin-left:10px;font-size:18px">${obj.value[1]}</span></p>
+                        <p  style="line-height:20px;color:#ffff;">${obj.marker} 综合指数: <span style="font-family:dinc;margin-left:10px;font-size:18px">${obj.value[2]}</span></p>
+                        </div>
+                        `;
+                }
+            },
+        },
+        grid: {
+            top: '10%',
+            bottom: '17%',
+            left: '10%',
+            right: '5%',
+            height: '73%'
+        },
+        label: {
+            fontSize: 8,
+            show: true,
+            formatter: function (params) {
+                return '{color1|' + params.name + '}'
+            },
+            rich: {
+                color1: {
+                    color: '#fff'
+                },
+                // color2: {
+                //     color: '#42a1fe'
+                // }
+            }
+            // emphasis: {
+            //     show: true,
+            //     position: "bottom",
+            // },
+        },
+        xAxis: {
+            min: 0,
+            max: 100,
+            axisLine: {
+                lineStyle: {
+                    color: "#fff",
+                    opacity: '0.6',
+                }
+            },
+            axisLabel: {
+                // margin: 15,
+                textStyle: {
+                    color: '#fff',
+                    opacity: '0.6',
+                    fontFamily: 'dinc',
+                    fontSize: '15'
+                }
+            },
+            axisTick: {
+                lineStyle: {
+                    color: "#fff",
+                    opacity: '0.6',
+                }
+            },
+            // name:"销售毛利率",
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            splitArea: {
+                show: true,
+                areaStyle: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            max: 100,
+            // name:"订单成本",
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            axisLabel: {
+                margin: 15,
+                textStyle: {
+                    color: '#fff',
+                    opacity: '0.6',
+                    fontFamily: 'dinc',
+                    fontSize: '15'
+                }
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+        },
+        series: [{
+            // top:0,
+            // left:0,
+            // bottom:0,
+            // right:0,
+            type: "scatter",
+            // width: '100%',
+            data: seriesData,
+            symbolSize: function (data, index) {
+                return Math.sqrt(data[0]) / 4e1 * 400;
+            },
+            itemStyle: {
+                color: function (params) {
+                    // console.log();
+
+                    return colorList[params.dataIndex]
+                },
+
+                // fontSize:'20px'
+            },
+
+            label: {
+                normal: {
+                    color: '#ffff',
+                    textStyle: {
+                        fontSize: '12'
+                    },
+                }
+            },
+            markLine: {
+                symbol: ['none', 'none'],
+                data: [{
+                    // silent: true,
+                    xAxis: 50,
+                    // name: "营业额平均线",
+                    lineStyle: { //警戒线的样式 ，虚实 颜色
+                        type: "dashed", //样式  ‘solid’和'dotted'
+                        color: "#fff",
+                        opacity: '0.6',
+                        width: 1, //宽度,
+                    },
+                    tooltip: { show: false }
+                },
+                {
+                    silent: true,
+                    yAxis: 50,
+                    // name: "服务能力平均线",
+                    lineStyle: { //警戒线的样式 ，虚实 颜色
+                        type: "dashed", //样式  ‘solid’和'dotted'
+                        color: "#fff",
+                        opacity: '0.6',
+                        width: 1 //宽度
+                    },
+
+                },
+                ],
+            },
+        },],
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        { name: "2018年", value: "264.9" },
+        { name: "2019年", value: "241.5" },
+        { name: "2020年", value: "312.5" },
+        { name: "2021年", value: "447.9" },
+    ]
+    const myColor = ["#51FC4E", "#4C5FF5", "#FFE660", "#79F1FF"].reverse();
+    const xData = newData.map((item) => item.name);
+    const yData = newData.map((item) => item.value);
+    const max = Math.ceil(Math.max(...yData) * 1.2);
+    const maxData = [max, max, max, max, max];
+    let option = {
+        backgroundColor: '#0F1F45',
+        grid: {
+            left: "15%",
+            right: "0%",
+            bottom: "5%",
+            top: "10%",
+            containLabel: false,
+        },
+        xAxis: [
+            {
+                show: false,
+            },
+            {
+                show: false,
+            },
+        ],
+        yAxis: [
+            {
+                show: false,
+                inverse: true,
+                data: yData,
+            },
+            {
+                show: true,
+                data: yData,
+                offset: -45,
+                position: "right",
+                axisLabel: {
+                    show: false,
+                    // lineHeight: 0,
+                    // verticalAlign: "bottom",
+                    // fontSize: 15,
+                    // color: "#4bf3f9",
+                    // formatter: "{value}亿",
+                },
+                axisLine: {
+                    show: false,
+                },
+                splitLine: {
+                    show: false,
+                },
+                axisTick: {
+                    show: false,
+                },
+            },
+        ],
+        series: [
+            {
+                name: "进度",
+                show: true,
+                type: "bar",
+                barGap: "-100%",
+                xAxisIndex: 1,
+                barWidth: 4,
+                itemStyle: {
+                    borderRadius: 4,
+                    color: (params) => {
+                        var num = myColor.length;
+                        return {
+                            type: "linear",
+                            x: 0,
+                            y: 0,
+                            x2: 1,
+                            y2: 1,
+                            colorStops: [
+                                {
+                                    offset: 0,
+                                    color: "#0F1F45",
+                                },
+                                {
+                                    offset: 1,
+                                    color: myColor[params.dataIndex % num],
+                                },
+                            ],
+                        };
+                    },
+                },
+                label: {
+                    show: false,
+                },
+                // max: 0,
+                labelLine: {
+                    show: false,
+                },
+                z: 2,
+                data: yData,
+                animationDelay: 1000,
+                animationDuration: 1000
+            },
+            {
+                name: "外圆",
+                type: "scatter",
+                emphasis: {
+                    scale: false,
+                },
+                xAxisIndex: 1,
+                symbolSize: 10,
+                itemStyle: {
+                    color: (params) => {
+                        var num = myColor.length;
+                        return myColor[params.dataIndex % num];
+                    },
+                    shadowColor: "rgba(255, 255, 255, 0.5)",
+                    shadowBlur: 5,
+                    borderWidth: 1,
+                    opacity: 1,
+                },
+                label: {
+                    show: true,
+                    verticalAlign: "bottom",
+                    lineHeight: 38,
+                    formatter: function (data) {
+                        return yData[data.dataIndex] + "亿";
+                    },
+                    fontSize: 20,
+                    color: "#4bf3f9",
+                },
+                z: 2,
+                data: yData,
+                animationDelay: 1700,
+                animationDuration: 1000
+            },
+            {
+                name: "年份",
+                z: 1,
+                show: true,
+                type: "bar",
+                xAxisIndex: 1,
+                barGap: "-100%",
+                barWidth: 4,
+                itemStyle: {
+                    borderRadius: 4,
+                    color: "rgba(13, 55, 78, 1)",
+                },
+                label: {
+                    show: true,
+                    verticalAlign: "middle",
+                    position: "left",
+                    fontSize: 14,
+                    color: "#fff",
+                    formatter: function (data) {
+                        return xData[data.dataIndex] + "：";
+                    },
+                },
+                data: maxData,
+            },
+        ],
+    }
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

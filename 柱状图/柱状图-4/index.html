@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "宝安区-南山区",
+            "value": [
+                58,
+                42
+            ]
+        },
+        {
+            "name": "南山区-宝安区",
+            "value": [
+                57,
+                42
+            ]
+        },
+        {
+            "name": "宝安区-南山区",
+            "value": [
+                57,
+                42
+            ]
+        },
+        {
+            "name": "福田区-南山区",
+            "value": [
+                33,
+                42
+            ]
+        },
+        {
+            "name": "龙华区-龙岗区",
+            "value": [
+                33,
+                31
+            ]
+        },
+        {
+            "name": "南山区-福田区",
+            "value": [
+                33,
+                31
+            ]
+        },
+        {
+            "name": "龙岗区-龙华区",
+            "value": [
+                33,
+                31
+            ]
+        },
+        {
+            "name": "龙华区-龙岗区",
+            "value": [
+                31,
+                31
+            ]
+        },
+        {
+            "name": "南山区-福田区",
+            "value": [
+                31,
+                27
+            ]
+        },
+        {
+            "name": "龙岗区-龙华区",
+            "value": [
+                31,
+                27
+            ]
+        }
+    ]
+    let newAdress = [];
+    let list = newData.map((item, index) => {
+        return {
+            label: item.name,
+            value: item.value[0],
+            address: '123'
+        }
+    });
+    list.forEach((item) => {
+        newAdress.push('工作日')
+    })
+    let list1 = newData.map((item, index) => {
+        return {
+            label: '周末',
+            value: item.value[1]
+        }
+    })
+    let data = {
+        etc: {
+            name: '工作日',
+            data: list
+        },
+        notEtc: {
+            name: '周末',
+            data: list1
+        },
+    };
+
+    let legendData = [data.etc.name, data.notEtc.name];
+    let yAxisDataN = data.etc.data.map(e => e.label);
+    let yAxisDataV = data.notEtc.data.map(e => e.label);
+    let yAxisLabelN = data.etc.data.map(e => e.value).sort((a, b) => a - b);
+    let yAxisLabelN2 = data.etc.data.sort((a, b) => a.value - b.value);
+
+    let yAxisLabelV = data.notEtc.data.map(e => e.value).sort((a, b) => a - b);
+    let rankData = data.etc.data.map((item, index) => index)
+
+    let top1 = 60;
+    let bottom = 10;
+    let labelSetting = {
+        label: "13",
+        yLabel: "13"
+    }
+    let option = { 
+        title: {
+            text: "",
+            x: 'center',
+            textStyle: {
+                color: "#fff",
+                fontSize: 22
+            }
+        },
+        // backgroundColor: "#000",
+        tooltip: {
+            confine: true,
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+            },
+            textStyle: {
+                color: '#ffff',
+            },
+            formatter: function (params) {
+                // console.log(params[0].dataIndex,'xxx');
+                // // console.log(yAxisLabelN2)
+                // console.log(yAxisLabelN2[params[0].dataIndex].label)
+                var nameone = yAxisLabelN2[params[0].dataIndex].label;
+                return `
+          <p style="">${params[0].marker} 日期类型: <span style="font-weight:800;">${params[0].seriesName}</span></p>
+          <p style="">${params[0].marker} 起始-终点: <span style="font-weight:800;">${nameone}</span></p>
+          <p style="">${params[0].marker} 出行人数: <span style="font-weight:800;font-family:dinc;">${params[0].data}</span></p>
+          `
+            }
+        },
+        // legend: {
+        //   left: 'center',
+        //   top: 10,
+        //   itemWidth: 0, //图例标记的图形宽度
+        //   itemHeight: 0, //图例标记的图形高度
+        //   y: 'center',
+        //   borderRadius: 0,
+        //   inactiveColor: '#FFF',
+        //   formatter: (name) => {
+        //     if (name == data.etc.name) {
+
+        //       return '{a|' + name + '}'
+        //     } else {
+        //       return '{b|' + name + '}'
+        //     }
+        //   },
+        //   textStyle: {
+        //     rich: {
+        //       a: {
+        //         padding: [8, 15, 8, 15],
+        //         align: 'center',
+        //         backgroundColor: "#298bf6",
+        //         color: '#fff',
+
+        //       },
+        //       b: {
+        //         padding: [8, 15, 8, 15],
+        //         align: 'center',
+        //         backgroundColor: "#f9c807",
+        //         color: '#fff',
+        //       }
+        //     }
+        //   },
+        //   data: legendData
+        // },
+        grid: [{
+            right: '60%',
+            containLabel: false,
+            bottom,
+            top: 0,
+        }, {
+            left: '50%',
+            width: 0,
+            top: top1,
+            bottom: bottom
+        }, {
+            left: '60%',
+            containLabel: false,
+            bottom,
+            top: 0,
+        }],
+        xAxis: [{
+            type: 'value',
+            inverse: true,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false,
+            },
+            splitLine: {
+                show: false,
+            },
+        }, {
+            gridIndex: 1,
+            show: false
+        }, {
+            gridIndex: 2,
+            type: 'value',
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false,
+            },
+            splitLine: {
+                show: false,
+            },
+        }],
+        yAxis: [{
+            position: 'right',
+            axisLabel: {
+                color: '#fff',
+                fontSize: labelSetting.yLabel
+            },
+            axisLine: {
+                show: false
+            },
+            type: 'category',
+            inverse: false,
+            axisTick: {
+                show: false
+            },
+            data: newAdress
+        },
+        {
+            gridIndex: 1,
+            position: 'center',
+            type: 'category',
+            inverse: true,
+            axisLabel: {
+                show: true,
+                margin: 0,
+                color: "#fff",
+                // fontSize:12,
+                fontSize: labelSetting.yLabel
+            },
+            axisTick: {
+                show: false,
+            },
+            axisLine: {
+                show: false,
+            },
+            data: []
+        },
+        {
+            gridIndex: 2,
+            position: 'left',
+            axisLabel: {
+                color: `#fff`,
+                fontSize: labelSetting.yLabel
+            },
+            axisLine: {
+                show: false
+            },
+            type: 'category',
+            inverse: false,
+            axisTick: {
+                show: false
+            },
+            data: yAxisDataV
+        }
+        ],
+        series: [{
+            name: legendData[0],
+            type: 'bar',
+            barWidth: '50%',
+            label: {
+                show: true,
+                fontFamily: 'Rubik-Medium',
+                fontSize: labelSetting.label,
+                distance: 10,
+                color: '#fff',
+                position: 'left',
+                formatter: function (params) {
+                    return params.value
+                }
+            },
+            itemStyle: {
+                color: '#298bf6',
+            },
+            data: yAxisLabelN
+        },
+        {
+            type: 'bar',
+            barWidth: '50%',
+            label: {
+                show: true,
+                fontFamily: 'Rubik-Medium',
+                fontSize: labelSetting.label,
+                distance: 10,
+                color: '#fff',
+                position: 'right',
+                formatter: function (params) {
+                    return params.value
+                }
+            },
+            xAxisIndex: 2,
+            yAxisIndex: 2,
+            name: legendData[1],
+            itemStyle: {
+                color: '#f9c807',
+            },
+            data: yAxisLabelV
+        },
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

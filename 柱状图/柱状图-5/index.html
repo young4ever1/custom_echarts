@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "福安大厦",
+            "value": [20],
+            "valueAvg": 67
+        },
+        {
+            "name": "金运世纪",
+            "value": [182]
+
+        },
+        {
+            "name": "鑫竹苑南门",
+            "value": [33]
+
+        },
+        {
+            "name": "金竹花园南门",
+            "value": [58]
+
+        },
+        {
+            "name": "竹子林B1口",
+            "value": [122]
+
+        },
+        {
+            "name": "深圳东方银座美爵酒店",
+            "value": [98]
+
+        },
+        {
+            "name": "广东深圳风湿研究所",
+            "value": [59]
+        }
+    ];
+    let copyData = JSON.parse(JSON.stringify(newData));
+    // * 最小值
+    let minValue = copyData.sort((a, b) => {
+        return a.value[0] - b.value[0];
+    })
+    console.log(minValue);
+
+    let valueAvg1 = newData[0].valueAvg
+
+    let index = 0;
+    let newList = newData.map((item, index) => {
+        return {
+            value: [item.value[0] > valueAvg1 ? item.value[0] - valueAvg1 : 0]
+        }
+    })
+
+    let listArr1 = [];
+    newList.forEach(item => {
+        listArr1.push(item.value[0]);
+    })
+
+    let newListArr1 = listArr1.sort((a, b) => {
+        return b - a;
+    })
+
+    let chartMax1 = newListArr1[0] + valueAvg1;
+    let chartMax2 = newListArr1[1] + valueAvg1;
+
+    let xName = newData.filter((item, index) => {
+        return item.value[0] === chartMax1
+    })
+
+    let xName2 = newData.filter((item, index) => {
+        return item.value[0] === chartMax2
+    })
+
+    let getData = newData.map((item, index) => {
+        return {
+            name: item.name,
+            value: [item.value[0] >= valueAvg1 ? valueAvg1 : item.value[0]]
+        }
+    })
+
+    let showNum = [
+        { value: '报警', xAxis: xName[0].name, yAxis: chartMax1 },
+        // { value: '报警', xAxis: xName2[0].name, yAxis: chartMax2 },
+    ];
+    newData.forEach((item, index) => {
+        if (item.value[0] <= valueAvg1) {
+            showNum.push({ value: valueAvg1 - item.value[0] === 0 ? '正常' : '', xAxis: item.name, })
+        }
+
+    });
+
+
+
+    let option = {
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {
+                "type": "shadow",
+                textStyle: {
+                    color: "#fff"
+                }
+            },
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);color:#fff;padding:5px 20px 5px 20px;line-height:20px',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderRadius: 5,
+            borderWidth: 0,
+            formatter: function (params) {
+
+                params[0].value = params[0].value === valueAvg1 ? params[0].value + params[1].value : params[0].value
+                // params[2].value = params[2].value === valueAvg1 ? params[2].value + params[3].value : params[2].value
+                // console.log(params[0].value, params[2].value);
+                oneNum = params[0].value;
+                // twoNum = params[2].value
+                return `<p>${params[0].name}</p>
+                       <p>${params[0].marker} ${params[0].seriesName} : <span style="font-family:dincong;font-size:15px">${params[0].value}</span></p>
+                      `
+            }
+        },
+        "grid": {
+            top: '15%',
+            left: '15%',
+            right: '10%',
+            bottom: '15%',
+        },
+        "calculable": true,
+        "xAxis": [{
+            "type": "category",
+            "axisLine": {
+                lineStyle: {
+                    color: '#fff',
+                    opacity: 0.38
+                }
+            },
+            "splitLine": {
+                "show": false
+            },
+            "axisTick": {
+                "show": false
+            },
+            "splitArea": {
+                "show": false
+            },
+            "axisLabel": {
+                // "interval": 0,
+                color: 'rgba(255,255,255,0.7)',
+                fontSize: 15
+            },
+            "data": newData.map(item => {
+                return {
+                    value: item.name
+                }
+            }),
+        }],
+        yAxis: {
+            // type: 'category',
+            // name: "单位:次",
+            axisLabel: {
+                color: '#fff',
+                fontSize: 15,
+                fontFamily: 'dinc',
+                interval: 0,
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '  ' + '{b|}'
+                        ].join('\n')
+                    }
+                },
+                // "margin": -100,
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        backgroundColor: {
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: '#3d5269'
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#fff',
+                    opacity: 0.38,
+                    type: 'dashed'
+                }
+            },
+        },
+        "series": [
+            {
+                "name": "数量",
+                "type": "bar",
+                "stack": "总量",
+                "barMaxWidth": 20,
+                "barGap": "10%",
+                "itemStyle": {
+                    "normal": {
+                        "color":
+                        {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'rgb(255,234,0)' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'rgb(255,234,0)' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        },
+                    },
+                },
+                "data": getData.map(item => {
+                    return {
+                        value: item.value[0]
+                    }
+                }),
+                markLine: { //数据标准线
+                    symbol: ['none', 'none'],
+                    data: [{
+                        name: '标准值为5',
+                        yAxis: newData[0].valueAvg
+                    }],
+                    label: {
+                        normal: {
+                            show: true,
+                        }
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: 'rgba(255, 87, 29, 1)',
+                            width: 1
+                        }
+                    },
+                },
+                markPoint: {
+                    symbolSize: 50,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                color: '#fff'
+                            }
+                        },
+                        color: '#f90',
+                    },
+                    data: [{
+                        value: '报警', xAxis: minValue[0].name, yAxis: minValue[0].value[0]
+                    }]
+                },
+            },
+            {
+                markPoint: {
+                    symbolSize: 50,
+                    itemStyle: {
+                        color: '#f00',
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    data: chartMax1 > valueAvg1 ? showNum : []
+                },
+                // "name": "男",
+                "type": "bar",
+                "stack": "总量",
+                "itemStyle": {
+                    "normal": {
+                        "color": {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: '#FF6F5C' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#FF6F5C' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        },
+                        "barBorderRadius": 0
+                    }
+                },
+
+                "data": newList.map(item => {
+                    return {
+                        value: item.value[0]
+                    }
+                }),
+            },
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

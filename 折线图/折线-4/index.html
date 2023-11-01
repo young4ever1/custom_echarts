@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "2012",
+            "value": "33"
+        },
+        {
+            "name": "2013",
+            "value": "45"
+        },
+        {
+            "name": "2014",
+            "value": "36"
+        },
+        {
+            "name": "2015",
+            "value": "35"
+        },
+        {
+            "name": "2016",
+            "value": "34"
+        },
+        {
+            "name": "2017",
+            "value": "36"
+        },
+        {
+            "name": "2018",
+            "value": "35"
+        },
+        {
+            "name": "2019",
+            "value": "30"
+        },
+        {
+            "name": "2020",
+            "value": "32"
+        },
+        {
+            "name": "2021",
+            "value": "33"
+        }
+    ];
+    let index = 0;
+    let option = {
+        // backgroundColor: '#000',
+        "grid": {
+            top: '15%',
+            left: '15%',
+            right: '10%',
+            bottom: '17%',
+        },
+        xAxis: {
+            boundaryGap: false,
+            axisLabel: {
+                margin: 10,
+                textStyle: {
+                    fontFamily: 'dinc',
+                    fontSize: itemResize(14),
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    opcity: "0.8"
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.4)',
+                    opcity: 0.4
+                }
+            },
+            data: newData.map(item => {
+                return {
+                    value: item.name
+                }
+            }),
+        },
+        tooltip: {
+            show: true,
+            confine: true,
+            trigger: 'axis',
+            extraCssText: 'box-shadow : 0 0 4px rgba(22, 156, 241, 1);color:#fff',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                let str = ``;
+                params.forEach(item => {
+                    str += `<p style="width:100%;color:#ffff;"><span>${item.marker} ${item.name}</span><span style="float:right;font-family:dinc;font-size:16px;margin-left:15px">${item.value}</span></p>`
+                })
+                return str;
+            }
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    fontFamily: 'dinc',
+                    fontSize: itemResize(14),
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    opcity: "0.8"
+                },
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '  ' + '{b|}'
+                        ].join('/n')
+                    }
+                },
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        backgroundColor: {
+                            // 绝对路径
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    type: 'dashed',
+                    color: 'rgba(255, 255, 255, 0.2)',
+                    opcity: '0.2'
+                }
+            }
+        },
+        series: [{
+            type: 'line',
+            // symbol: 'none', // 去除折线圆点。
+            itemStyle: {
+                normal: {
+                    color: "rgba(0, 198, 255, 1)",
+                }
+            },
+            areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(0, 198, 255, 0.36)'
+                }, {
+                    offset: 1,
+                    color: 'rgba(176, 22, 241, 0)'
+                }])
+            },
+            lineStyle: {
+                color: '#00EBFF',
+                width: 2
+            },
+            data: newData.map(item => {
+                return {
+                    value: item.value
+                }
+            }),
+        }]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

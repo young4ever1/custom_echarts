@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+    <script src="../../js/liquidFill.js"></script>
+
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            name: '监测中心站',
+            value: [12]
+        },
+        {
+            name: '调查中心',
+            value: [12]
+        },
+        {
+            name: '核与辐射安全中心',
+            value: [12]
+        },
+        {
+            name: '宣传教育中心',
+            value: [12]
+        }
+    ]
+    var value = 0.5;
+    var value1 = 75.2
+    var value2 = 75.2
+    var data = [value, value, value,];
+    let option = {
+        // backgroundColor: '#fff',
+        title: [
+            {
+                text: '当前流量剩余：' + value1 + 'M',
+                left: '50%',
+                top: "58%",
+                textAlign: 'center',
+                textStyle: {
+                    fontSize:itemResize(20),
+                    fontWeight: '400',
+                    color: '#fff',
+
+                    textAlign: 'center',
+                },
+            },
+            {
+                text: '已用流量：' + value2 + 'M',
+                left: '50%',
+                top: "64%",
+                textAlign: 'center',
+                textStyle: {
+                    fontSize: itemResize(20),
+                    fontWeight: '400',
+                    color: '#fff',
+
+                    textAlign: 'center',
+                },
+            },
+            {
+                text: (value * 100).toFixed(0),
+                left: '47.5%',
+                top: '30%',
+                textAlign: 'center',
+                textStyle: {
+                    fontSize: itemResize(70),
+                    color: '#fff',
+                },
+            },
+
+            {
+                text: "%",
+                left: '56%',
+                top: '34%',
+                textAlign: 'center',
+                textStyle: {
+                    fontSize: itemResize(40),
+                    color: '#fff',
+                },
+            },
+        ],
+        series: [{
+            type: 'liquidFill',
+            radius: '70%',
+            z: 6,
+            center: ['50%', '50%'],
+            amplitude: 20,
+            backgroundStyle: {
+                borderWidth: 1,
+                color: 'rgba(201,219,252, 1)', // 球体
+            },
+            color: [
+                {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                        {
+                            offset: 1,
+                            color: '#133480',
+                        },
+                        {
+                            offset: 0,
+                            color: '#5F8EE8',
+                        },
+                    ],
+                    globalCoord: false,
+                },
+                {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                        {
+                            offset: 1,
+                            color: '#133480',
+                        },
+                        {
+                            offset: 0,
+                            color: '#5F8EE8',
+                        },
+                    ],
+                    globalCoord: false,
+                },
+                {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                        {
+                            offset: 1,
+                            color: '#5F8DE8',
+                        },
+                        {
+                            offset: 0,
+                            color: '#5F8DE8',
+                        },
+                    ],
+                    globalCoord: false,
+                },
+            ],
+            data: [value + 0.02,
+            {
+                value: value - 0.01,
+                direction: 'left',
+            },
+            value - 0.01,
+            ],
+            label: {
+                normal: {
+                    formatter: '',
+                }
+            },
+            outline: {
+                show: true,
+                itemStyle: {
+                    borderWidth: 0,
+                },
+                borderDistance: 0,
+            }
+        },
+
+
+        ]
+    }
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

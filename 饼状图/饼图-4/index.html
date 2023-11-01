@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "人群聚集",
+            "value": [8203]
+        },
+        {
+            "name": "打架斗殴",
+            "value": [3489]
+        },
+        {
+            "name": "消防安全",
+            "value": [9034]
+        },
+        {
+            "name": "刑事案件",
+            "value": [4970]
+        },
+        {
+            "name": "刑事案情",
+            "value": [4970]
+        },
+        {
+            "name": "刑事",
+            "value": [4970]
+        }
+
+    ];
+    let uploadedDataURL = 'image/shadow.png'
+    let totalEvent = 0;
+    newData.forEach(item => {
+        totalEvent += item.value[0];
+    })
+    console.log(totalEvent);
+    let option = {
+        color: ['#0078FF', '#00EBFF', '#00FF84', '#D965FF', '#68A4FF', '#9CDA44'],
+        title: {
+            text: '事件总数',
+            left: '22.5%',
+            top: '52%',
+            // align:'center',
+            textStyle: {
+                color: '#fff',
+                fontWeight: 'normal',
+                fontFamily: 'pingfang',
+                fontSize: 16
+            }
+        },
+        tooltip: {
+            // type: 'axis'
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                console.log(params, 'xxxx');
+                return `<p style="color:#fff;">${params.marker} ${params.name}: <span style="font-family:'dinc';font-size:18px;"> ${params.value} </span>人</p>`;
+            }
+        },
+        grid: {
+            // top: '15%',
+            // left: '10%',
+            right: '10%',
+            // bottom: '22%',
+        },
+        legend: {
+            icon: 'circle',
+            x2: '16%',
+            itemGap: 14, // 图例每项之间的间隔。
+            orient: 'vertical',
+            y: 'center',
+            y2: "center",
+            itemWidth: 12,
+            itemHeight: 12,
+            formatter: function (name) {
+                var total = 0;
+                var target;
+                for (var i = 0, l = newData.length; i < l; i++) {
+                    total += newData[i].value[0];
+                    if (newData[i].name == name) {
+                        target = newData[i].value[0];
+                    }
+                }
+                var arr = [
+                    '{b|' + name + '}' + '' +
+                    '{a|' + ((target / total) * 100).toFixed(2) + '%}'
+
+                ]
+                return arr
+            },
+            textStyle: {
+                color: '#fff',
+                rich: {
+                    a: {
+                        fontFamily: 'impact',
+                        fontSize: 16,
+                        padding: [0, 0, 0, 10]
+
+                    },
+                    b: {
+                        fontFamily: 'pingfang',
+                        fontSize: 14
+                    }
+                }
+            },
+        },
+        graphic: [{
+            z: 4,
+            type: 'image',
+            id: 'logo',
+            left: '20.1%',
+            top: '31%',
+            z: -10,
+            bounding: 'raw',
+            rotation: 0, //旋转
+            origin: [50, 50], //中心点
+            scale: [1.0, 1.0], //缩放
+            style: {
+                image: uploadedDataURL,
+                width: itemResize(140),
+                height: itemResize(140),
+                opacity: 1
+            },
+        }, {
+            z: 4,
+            type: 'text',
+            // x: 'center',
+            top: '42%',
+            left: '23.5%',
+            style: {
+                text: totalEvent,
+                fill: '#fff',
+                fontSize: 25,
+                fontFamily: `impact`
+            }
+        }],
+        series: [{
+            name: newData.map(item => {
+                return {
+                    value: item.name
+                }
+            }),
+            type: 'pie',
+            radius: ['45%', '58%'],
+            center: ['30%', '50%'],
+            data: newData,
+            // roseType: 'angle',
+            label: {
+                show: false
+            },
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        var colorList = ['#0078FF', '#00EBFF', '#00FF84', '#D965FF', '#68A4FF', '#9CDA44'];
+                        return colorList[params.dataIndex % colorList.length];
+                    }
+                }
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        },
+        {
+            tooltip: {
+                show: false
+            },
+            itemStyle: {
+                normal: {
+                    color: 'rgba(255, 255, 255, 0.38)',
+                }
+            },
+            type: 'pie',
+            hoverAnimation: false,
+            radius: ['62%', '63%'],
+            center: ["30%", "50%"],
+            label: {
+                normal: {
+                    show: false
+                }
+            },
+            data: [{
+                value: 1,
+            }],
+            z: -1
+        },
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

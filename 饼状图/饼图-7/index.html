@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData1 = [
+        {
+            "name": "对外",
+            "value": 53759
+        },
+        {
+            "name": "过境",
+            "value": 31533
+        },
+        {
+            "name": "内部",
+            "value": 941
+        }
+    ];
+    let newData2 = [
+        {
+            "name": "对外",
+            "value": 410067
+        },
+        {
+            "name": "过境",
+            "value": 248816
+        },
+        {
+            "name": "内部",
+            "value": 161927
+        }
+    ]
+    let colorList = ['#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac', '#0090ff', '#06d3c4', '#ffbc32', '#2ccc44', '#ff3976', '#6173d6', '#914ce5', '#42b1cc', '#ff55ac']
+
+
+    let option = {
+        // backgroundColor: '#000',
+        tooltip: {
+        },
+
+        series: [{
+            tooltip: {
+                extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1)',
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                borderWidth: 0,
+                formatter: function (params) {
+                    return `<p style="line-height:25px;color:#fff">${params.marker} 区域名称: <span style="margin-left:10px;font-size:18px;font-family:'dinc';">${params.name}<span/></p>
+                        <p style="line-height:25px;color:#fff">${params.marker} 实有人口: <span style="margin-left:10px;font-family:'dinc';font-size:18px;">${params.value}<span/></p>
+                        <p style="line-height:25px;color:#fff">${params.marker} 占<span style="margin-left:28px">比: </span><span style="margin-left:10px;font-family:'dinc';font-size:18px;">${params.percent}%<span/></p>
+                        `
+                }
+            },
+            // name: '整体分类',
+            type: 'pie',
+            radius: [0, '40%'],
+            label: {
+                position: 'inner',
+                textStyle: {
+                    fontSize: '15px',
+                    color: '#fff',
+                    fontFamily: 'pingfang'
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
+            },
+
+            selectedMode: 'single',
+            data: newData1
+        },
+        {
+            tooltip: {
+                confine: true,
+                extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1)',
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                borderWidth: 0,
+                formatter: function (params) {
+                    return `<p style="line-height:25px;color:#fff">${params.marker} 区域名称: <span style="margin-left:10px;font-size:18px;font-family:'dinc';">${params.name}<span/></p>
+                        <p style="line-height:25px;color:#fff">${params.marker} 实有人口: <span style="margin-left:10px;font-family:'dinc';font-size:18px;">${params.value}<span/></p>
+                        <p style="line-height:25px;color:#fff">${params.marker} 占<span style="margin-left:28px">比: </span><span style="margin-left:10px;font-family:'dinc';font-size:18px;">${params.percent}%<span/></p>
+                        `
+                }
+            },
+            // name: '招标方式',
+            type: 'pie',
+            radius: ['60%', '85%'],
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
+            },
+            label: {
+                normal: {
+                    position: 'inner',
+                    show: false
+                }
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: '15',
+                    color: '#000',
+                    // fontWeight: 'bold',
+                    fontFamily: 'pingfang'
+                }
+            },
+
+            data: newData2
+        }
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

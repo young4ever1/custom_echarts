@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "工作人口",
+            "value": 13.9
+        },
+        {
+            "name": "居住人口",
+            "value": 8.9
+        },
+        {
+            "name": "到访人口",
+            "value": 3.1
+        }
+    ]
+    let uploadedDataURL = 'image/shadow.png'
+    let total = 0
+    newData.forEach(res => {
+        total += res.value
+    })
+    console.log(total, 'xxx');
+    newData.forEach(res => {
+        res.percent = ((res.value / total) * 100).toFixed(1);
+    })
+    console.log(newData, 'xxx');
+    let newObj = array2obj(newData, "name")
+    function array2obj(array, key) {
+        let resObj = {};
+        for (let i = 0; i < array.length; i++) {
+            resObj[array[i][key]] = array[i];
+        }
+        return resObj;
+    }
+    // let legendData1 = ["渣土车", "危险品车", "大型货车"]
+    let colorList = ['#CC53FF', '#ABFF7D', '#00DDF0'];
+    let option = {
+        // backgroundColor: '#000',
+        legend: [{
+            type: "scroll",
+            orient: 'vertical',
+            // icon: 'square',
+            // left: '6%',
+            right: '17%',
+            align: 'left',
+            top: 'center',
+            itemGap: 17,
+            itemWidth: itemResize(10),
+            itemHeight: itemResize(42),
+            // bottom:'50%',
+            textStyle: {
+                fontSize: 14,
+                color: '#AAAAAA'
+            },
+            formatter: function (name) {
+                return "{point|" + newObj[name].percent + "%}\n{name|" + name + " }"
+            },
+            textStyle: {
+                rich: {
+                    name: {
+                        fontSize: 13,
+                        color: "#00DDF0",
+                        fontFamily: 'pingfang'
+                    },
+                    point: {
+                        fontSize: 17,
+                        fontFamily: 'dinc',
+                        color: '#fff',
+                        padding: [0, 0, itemResize(2), 0]
+                    }
+                }
+            },
+            // data: legendData1
+        }],
+        tooltip: {
+            confine: true,
+            // type: 'axis'
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                console.log(params, 'xxxx');
+                return `<p style="color:#fff;">${params.marker} ${params.name}: <span style="font-family:'dinc';font-size:18px;"> ${params.value} </span>人</p>`;
+            }
+        },
+        grid: {
+            top: '30%',
+            left: '15%',
+            right: '10%',
+            bottom: '15%',
+        },
+        graphic: [{
+            z: 4,
+            type: 'image',
+            id: 'logo',
+            left: '23%',
+            top: '31%',
+            z: -10,
+            bounding: 'raw',
+            rotation: 0, //旋转
+            origin: [60.5, 32.5], //中心点
+            scale: [1.0, 1.0], //缩放
+            style: {
+                image: uploadedDataURL,
+                width: itemResize(130),
+                height: itemResize(130),
+                opacity: 1
+            }
+        }],
+        series: [{
+            type: 'pie',
+            z: 3,
+            center: ['32%', '50%'],
+            radius: ['48%', '68%'],
+            clockwise: true,
+            avoidLabelOverlap: true,
+            hoverOffset: 15,
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
+            },
+            label: {
+                show: false,
+                position: 'outside',
+                formatter: '{a|{b}：{d}%}\n{hr|}',
+                rich: {
+                    a: {
+                        color: '#fff',
+                        padding: [20, -80, 0, -80]
+                    }
+                }
+            },
+            data: newData
+        }]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

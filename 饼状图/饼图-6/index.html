@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "东莞市",
+            "value": 3
+        },
+        {
+            "name": "广州市",
+            "value": 1
+        },
+        {
+            "name": "惠州市",
+            "value": 1
+        },
+        {
+            "name": "佛山市",
+            "value": 399
+        },
+        {
+            "name": "汕尾市",
+            "value": 399
+        },
+        {
+            "name": "中山市",
+            "value": 237
+        },
+        {
+            "name": "汕头市",
+            "value": 228
+        },
+        {
+            "name": "揭阳市",
+            "value": 201
+        },
+        {
+            "name": "湛江市",
+            "value": 177
+        },
+        {
+            "name": "珠海市",
+            "value": 145
+        }
+    ];
+    let color = ['#0E7CE2', '#FF8352', '#E271DE', '#F8456B', '#00FFFF', '#4AEAB0'];
+    let formatNumber = function (num) {
+        let reg = /(?=(\B)(\d{3})+$)/g;
+        return num.toString().replace(reg, ',');
+    }
+    let total = newData.reduce((a, b) => {
+        return a + b.value * 1
+    }, 0);
+
+    newData.map(item => {
+        item.percent = (parseInt(item.value) / total * 100).toFixed(2) + '%';
+    })
+    let option = {
+        color: color,
+        tooltip: {
+            confine: true,
+            trigger: 'item',
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                // console.log(params, 'xxxx');
+                return `<p style="font-size:12px;color:#fff">${params.marker} ${params.name} <span style="font-family:dincong;font-size:15px">${params.value}<span/>人</p>`
+            }
+        },
+        series: [{
+            type: 'pie',
+            radius: ['50%', '70%'],
+            center: ['50%', '50%'],
+            data: newData,
+            hoverAnimation: false,
+            itemStyle: {
+                normal: {
+                    // borderColor: bgColor,
+                    borderWidth: 2
+                }
+            },
+            labelLine: {
+                normal: {
+                    length: itemResize(20),
+                    length2: itemResize(105),
+                    lineStyle: {
+                        color: '#e6e6e6'
+                    }
+                }
+            },
+            label: {
+                normal: {
+                    formatter: params => {
+                        // console.log(params,'xxx');
+                        return (
+                            '{point|' + params.percent + '%' + '}'
+                        );
+                    },
+                    // padding: [0, -75, 21, -80],
+                    rich: {
+                        icon: {
+                            fontSize: 16
+                        },
+                        point: {
+                            fontSize: 16,
+                            // padding: [-nowSize(580), -nowSize(850), -nowSize(15), nowSize(50)],
+                            color: '#fff',
+                            fontFamily: 'impact'
+                        }
+                    }
+                }
+            }
+        }]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

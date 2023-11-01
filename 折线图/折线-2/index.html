@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "桂林街道",
+            "time": "2000年",
+            "value": [
+                88,
+                95
+            ]
+        },
+        {
+            "name": "海军广场",
+            "time": "2001年",
+            "value": [
+                87,
+                75
+            ]
+        },
+        {
+            "name": "昆明街道",
+            "value": [
+                100,
+                103
+            ]
+        },
+        {
+            "name": "老虎滩街道",
+            "value": [
+                85,
+                88
+            ]
+        },
+        {
+            "name": "青泥洼街道",
+            "value": [
+                84,
+                95
+            ]
+        },
+        {
+            "name": "人民路街道",
+            "value": [
+                84,
+                105
+            ]
+        }
+    ]
+    let index = 0;
+    let title = [];
+    newData.map(item => {
+        if (title.length < 2) {
+            title.push(item.time);
+        }
+    })
+    let option = {
+        // backgroundColor: '#000',
+        color: ['rgba(215, 74, 255, 1)', 'rgba(0, 235, 255, 1)'],
+        legend: {
+            icon: 'roundRect',
+            right: '10%',
+            // selectedMode: false,
+            top: '6%',
+            itemWidth: 10,
+            itemHeight: 10,
+            textStyle: {
+                color: "#fff",
+            },
+            data: title
+        },
+        tooltip: {
+            show: true,
+            confine: true,
+            trigger: 'axis',
+            extraCssText: 'box-shadow : 0 0 4px rgba(22, 156, 241, 1);color:#fff',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                let str = `<p style="color:#ffff;height:25px">${params[0].name}时</p>`;
+                params.forEach(item => {
+                    str += `<p style="width:100%;color:#ffff;"><span>${item.marker} ${item.seriesName}</span><span style="float:right;font-family:dinc;font-size:16px;margin-left:15px">${item.value}</span></p>`
+                })
+                return str;
+            }
+        },
+        grid: {
+            left: '13%',
+            right: '10%',
+            bottom: '20%',
+            top: '20%'
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                axisLabel: {
+                    margin: 10,
+                    textStyle: {
+                        fontFamily: 'pingfang'
+                    },
+                    formatter: function (value) {
+                        let ret = ""; //拼接加\n返回的类目项  
+                        let length = value.length;
+                        if (length === 4) {
+                            maxLength = 2; //每项显示文字个数  
+                        }
+                        if (length === 5) {
+                            maxLength = 3;
+                        }
+                        if (length === 6) {
+                            maxLength = 4;
+                        }
+                        let maxLength;//每项显示文字个数  
+                        let valLength = value.length; //X轴类目项的文字个数  
+                        let rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数  
+                        if (rowN > 1) //如果类目项的文字大于5,  
+                        {
+                            for (let i = 0; i < rowN; i++) {
+                                let temp = ""; //每次截取的字符串  
+                                let start = i * maxLength; //开始截取的位置  
+                                let end = start + maxLength; //结束截取的位置  
+                                //这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧  
+                                temp = value.substring(start, end) + "\n";
+                                ret += temp; //凭借最终的字符串  
+                            }
+                            return ret;
+                        } else {
+                            return value;
+                        }
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '0.28',
+                    }
+
+                },
+                axisTick: {
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '0.28',
+                    }
+                },
+                data: newData.map(item => {
+                    return {
+                        value: item.name
+                    }
+                })
+            }
+        ],
+        yAxis: [
+            {
+                min: 0,
+                max: 250,
+                type: 'value',
+                axisLabel: {
+                    textStyle: {
+                        color: '#27F7FF',
+                        fontFamily: 'dinc',
+                        fontSize: 15
+                    },
+                    formatter: function (params) {
+                        if (index === 0) {
+                            return [
+                                params + '  ' + '{b|}' + ' '
+                            ].join('\n')
+                        }
+                    },
+                    rich: {
+                        b: {
+                            width: 8,
+                            height: 8,
+                            backgroundColor: {
+                                image: '../image/sj.png'
+                            }
+                        }
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        type: 'dashed',
+                        color: "#fff",
+                        opacity: '0.28'
+                    }
+                }
+            }, {
+                min: 0,
+                max: 250,
+                type: 'value',
+                axisLabel: {
+                    textStyle: {
+                        color: '#D74AFF',
+                        fontFamily: 'dinc',
+                        fontSize: 15
+                    },
+                    formatter: function (params) {
+                        if (index === 0) {
+                            return [
+                                ' ' + '{b|}' + '  ' + params
+                            ].join('\n')
+                        }
+                    },
+                    rich: {
+                        b: {
+                            width: 8,
+                            height: 8,
+                            backgroundColor: {
+                                image: '../image/sj2.png'
+                            }
+                        }
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        type: 'dashed',
+                        color: "#fff",
+                        opacity: '0.28'
+                    }
+                }
+            }
+
+        ],
+        series: [
+            {
+                smooth: true,
+                name: title[0],
+                type: 'line',
+                stack: '总量',
+                label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                        color: '#fff',
+                        fontFamily: 'dinc',
+                        fontSize: '15'
+                    }
+                },
+
+                areaStyle: {
+                    color: 'rgba(215, 74, 255, 0.38)'
+                },
+                data: newData.map(item => {
+                    return {
+                        value: item.value[0]
+                    }
+                })
+            },
+            {
+                smooth: true,
+                name: title[1],
+                type: 'line',
+                stack: '总量',
+                label: {
+                    show: true,
+                    position: 'top',
+                    textStyle: {
+                        color: '#fff',
+                        fontFamily: 'dinc',
+                        fontSize: '15'
+                    }
+                },
+                areaStyle: {
+                    color: 'rgba(0, 235, 255, 0.38)'
+                },
+                data: newData.map(item => {
+                    return {
+                        value: item.value[1]
+                    }
+                })
+            },
+
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

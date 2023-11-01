@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "年轻人",
+            "value": 2373,
+            "symbolSize": 48,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#929fff",
+                    "color": "#929fff"
+                }
+            }
+        },
+        {
+            "name": "老年人",
+            "value": 5449,
+            "symbolSize": 73,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#9de0ff",
+                    "color": "#9de0ff"
+                }
+            }
+        },
+        {
+            "name": "步行达人",
+            "value": 2289,
+            "symbolSize": 67,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#ffa897",
+                    "color": "#ffa897"
+                }
+            }
+        },
+        {
+            "name": "常访地",
+            "value": 2518,
+            "symbolSize": 50,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#af87fe",
+                    "color": "#af87fe"
+                }
+            }
+        },
+        {
+            "name": "科技爱好者",
+            "value": 4730,
+            "symbolSize": 88,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#7dc3fe",
+                    "color": "#7dc3fe"
+                }
+            }
+        },
+        {
+            "name": "工作地",
+            "value": 1952,
+            "symbolSize": 55,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#bb60b2",
+                    "color": "#bb60b2"
+                }
+            }
+        },
+        {
+            "name": "美妆爱好者",
+            "value": 926,
+            "symbolSize": 70,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#433e7c",
+                    "color": "#433e7c"
+                }
+            }
+        },
+        {
+            "name": "小汽车老司机",
+            "value": 4536,
+            "symbolSize": 67,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#f47a75",
+                    "color": "#f47a75"
+                }
+            }
+        },
+        {
+            "name": "公交爱好者",
+            "value": 750,
+            "symbolSize": 47,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#009db2",
+                    "color": "#009db2"
+                }
+            }
+        },
+        {
+            "name": "中年人",
+            "value": 493,
+            "symbolSize": 82,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#024b51",
+                    "color": "#024b51"
+                }
+            }
+        },
+        {
+            "name": "骑行达人",
+            "value": 385,
+            "symbolSize": 59,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#0780cf",
+                    "color": "#0780cf"
+                }
+            }
+        },
+        {
+            "name": "电瓶车爱好者",
+            "value": 4960,
+            "symbolSize": 90,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#765005",
+                    "color": "#765005"
+                }
+            }
+        },
+        {
+            "name": "中等消费",
+            "value": 8694000,
+            "symbolSize": 134,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#e75840",
+                    "color": "#e75840"
+                }
+            }
+        },
+        {
+            "name": "居住地",
+            "value": 5668,
+            "symbolSize": 75,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#26ccd8",
+                    "color": "#26ccd8"
+                }
+            }
+        },
+        {
+            "name": "地铁爱好者",
+            "value": 339,
+            "symbolSize": 68,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#3685fe",
+                    "color": "#3685fe"
+                }
+            }
+        },
+        {
+            "name": "高消费",
+            "value": 671,
+            "symbolSize": 62,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#9977ef",
+                    "color": "#9977ef"
+                }
+            }
+        },
+        {
+            "name": "低消费",
+            "value": 27000,
+            "symbolSize": 114,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#f5616f",
+                    "color": "#f5616f"
+                }
+            }
+        },
+        {
+            "name": "小孩",
+            "value": 10777000,
+            "symbolSize": 130,
+            "draggable": true,
+            "itemStyle": {
+                "normal": {
+                    "shadowBlur": 100,
+                    "shadowColor": "#f7b13f",
+                    "color": "#f7b13f"
+                }
+            }
+        }
+    ];
+
+    // console.log(newData[0].itemStyle)
+    function getRandomIntInclusive(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
+    }
+    let arr = [];
+    for (let i = 0; i < newData.length; i++) {
+        let num = getRandomIntInclusive(20, 50);
+        num = parseInt(num, 10);
+        arr.push(num);
+    }
+    let colorList =
+        [
+            '#929fff', '#9de0ff', '#ffa897', '#af87fe', '#7dc3fe',
+            '#bb60b2', '#433e7c', '#f47a75', '#009db2', '#024b51',
+            '#0780cf', '#765005', '#e75840', '#26ccd8', '#3685fe',
+            '#9977ef', '#f5616f', '#f7b13f', '#f9e264', '#50c48f'
+        ];
+    arr.forEach((item, index) => {
+        newData[index].symbolSize = item
+    })
+    let option = {
+        tooltip: {
+            confine: true,
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);color:#fff',
+            color: '#fff',
+            borderWidth: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            formatter: function (params) {
+                console.log(params, 'xxx');
+                return `<p>${params.marker} ${params.name}</p>`
+            }
+        },
+        animationDurationUpdate: function (idx) {
+            // 越往后的数据延迟越大
+            return idx * 100;
+        },
+        animationEasingUpdate: 'bounceIn',
+        color: ['#fff', '#fff', '#fff'],
+        series: [{
+            type: 'graph',
+            layout: 'force',
+            force: {
+                repulsion: 100,
+                edgeLength: 10
+            },
+            roam: true,
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            data: newData
+        }]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

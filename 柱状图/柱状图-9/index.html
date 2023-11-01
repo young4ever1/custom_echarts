@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+
+    let newData = [
+        {
+            "name": "金众小区",
+            "value": "554"
+        },
+        {
+            "name": "东海缤纷天地",
+            "value": "419"
+        },
+        {
+            "name": "KK ONE购物中心",
+            "value": "371"
+        },
+        {
+            "name": "竹国小区、建业小区",
+            "value": "364"
+        },
+        {
+            "name": "东海城市、东海文化广场",
+            "value": "320"
+        },
+        {
+            "name": "皇冠科技园、休育中心",
+            "value": "306"
+        },
+        {
+            "name": "泰然科技园、泰然公寓区",
+            "value": "299"
+        },
+        {
+            "name": "海松大厦",
+            "value": "281"
+        },
+        {
+            "name": "博日商务大厦",
+            "value": "269"
+        },
+        {
+            "name": "竹盛花园",
+            "value": "262"
+        }
+    ]
+    let max = [];
+
+    let imgUrl = '../image/sj.png'
+    // console.log(newData,'new');
+    let index = 0;
+    let option = {
+        // backgroundColor:'#000',
+        tooltip: {
+            trigger: 'item',
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                // console.log(params, 'xxxx');
+
+                return `<p style="color:#fff;">${params.marker} ${params.name}: 数量指数<span style="font-family:'dinc';font-size:18px;"> ${params.value} </span></p>`;
+            }
+        },
+        grid: {
+            top: '5%',
+            left: '15%',
+            right: '10%',
+            bottom: '25%',
+        },
+        // backgroundColor: '#011c3a',
+        xAxis: {
+            data: newData.map((item) => {
+                return {
+                    value: item.name
+                }
+            }),
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#fff',
+                    opacity: 0.38
+                }
+            },
+            axisLabel: {
+                rotate: 20,
+                color: '#fff',
+                opacity: 0.8,
+                fontSize: 14,
+                fontFamily: 'pingfang',
+                margin: 15
+            },
+            axisTick: {
+                show: false
+            },
+            interval: 0
+        },
+        yAxis: {
+            // type: 'category',
+            // name: "单位:次",
+            axisLabel: {
+                color: '#fff',
+                fontSize: 15,
+                fontFamily: 'dinc',
+                interval: 0,
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '  ' + '{b|}'
+                        ].join('\n')
+                    }
+                },
+                // "margin": -100,
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        backgroundColor: {
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: '#3d5269'
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#FFFFFF',
+                    opacity: '0.1',
+                    type: 'dashed'
+                }
+            },
+
+        },
+        series: [{
+            type: 'pictorialBar',
+            symbol: 'rect',
+            symbolSize: [15, 4],
+            symbolOffset: [0, -6],
+            zlevel: 4,
+            // tooltip: {
+            //     show: false
+            // },
+            itemStyle: {
+                normal: {
+                    color: '#E860FF'
+                }
+            },
+            data: newData.map((item) => {
+                return {
+                    value: item.value,
+                    symbolPosition: 'end'
+                }
+            }),
+        }, {
+            type: 'bar',
+            barWidth: 15,
+            itemStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(242, 133, 255, 1)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(192, 0, 255, 0)'
+                    }], false)
+                }
+            },
+            data: newData.map((item) => {
+                return {
+                    value: item.value
+                }
+            }),
+            z: 5
+        },
+        {
+            type: 'pictorialBar',
+            name: 'pictorial element',
+            symbol: imgUrl,
+            // z: 10,
+            tooltip: {
+                show: false
+            },
+            animation: false,
+            color: 'rgba(255, 255, 255, 0.06)',
+           
+        },]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    let rangeY = echartsInstance.getModel().getComponent('yAxis').axis.scale._extent[1];
+    for (let i = 1; i <= newData.length; i++) {
+        max.push(rangeY);
+    }
+    if (max[0] === 600) {
+        option.series[2].data = max.map(item => {
+            return {
+                value: item,
+                symbolSize: [
+                    '80%', // 50% of the width of reference bar.
+                    '100%' // 100% of the height of reference bar.
+                ]
+            }
+        });
+        initDom(echarts_one, option)
+    }
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

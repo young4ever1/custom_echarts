@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "0.0",
+            "value": 103862
+        },
+        {
+            "name": "1.0",
+            "value": 124731
+        },
+        {
+            "name": "2.0",
+            "value": 94584
+        },
+        {
+            "name": "3.0",
+            "value": 72088
+        },
+        {
+            "name": "4.0",
+            "value": 70661
+        },
+        {
+            "name": "5.0",
+            "value": 106823
+        },
+        {
+            "name": "6.0",
+            "value": 415856
+        },
+        {
+            "name": "7.0",
+            "value": 1.46579e+06
+        },
+        {
+            "name": "8.0",
+            "value": 1.53051e+06
+        },
+        {
+            "name": "9.0",
+            "value": 859292
+        },
+        {
+            "name": "10.0",
+            "value": 629619
+        },
+        {
+            "name": "11.0",
+            "value": 665723
+        },
+        {
+            "name": "12.0",
+            "value": 617774
+        },
+        {
+            "name": "13.0",
+            "value": 659956
+        },
+        {
+            "name": "14.0",
+            "value": 644031
+        },
+        {
+            "name": "15.0",
+            "value": 638390
+        },
+        {
+            "name": "16.0",
+            "value": 732063
+        },
+        {
+            "name": "17.0",
+            "value": 1.02976e+06
+        },
+        {
+            "name": "18.0",
+            "value": 1.47013e+06
+        },
+        {
+            "name": "19.0",
+            "value": 1.19468e+06
+        },
+        {
+            "name": "20.0",
+            "value": 1.04846e+06
+        },
+        {
+            "name": "21.0",
+            "value": 835752
+        },
+        {
+            "name": "22.0",
+            "value": 378776
+        },
+        {
+            "name": "23.0",
+            "value": 191883
+        }
+    ];
+    let index = 0;
+    // 标题内容
+    let title = [];
+
+    newData.forEach(item => {
+        if (title.length < 5) {
+            title.push(item.name);
+        }
+    });
+    let option = {
+        // backgroundColor: '#000',
+        color: ['#FF3D29', '#FFAA16', '#F3FF2E', '#B9FF67', '#00FF5A'],
+        legend: {
+            data: title,
+            icon: 'roundRect',
+            itemGap: 22,
+            itemWidth: 20,
+            itemHeight: 10,
+            // itemGap:10,
+            show:false,
+            borderRadius: 10,
+            right: '10%',
+            top: '0%',
+            selectedMode: true,
+            textStyle: {
+                color: '#fff',
+                opacity: '0.85',
+                fontFamily: 'pingfang'
+            }
+        },
+        /**
+         *  弹出框更改。
+         */
+        tooltip: {
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1)',
+            show: true,
+            trigger: 'axis',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderRadius: 5,
+            borderWidth: 0,
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+                }
+            },
+            formatter: function (params) {
+                return `<p style="color:#fff">${params[0].marker}<span>${params[0].name} : </span><span>通行人数 ${params[0].value}人</span></p>`
+            }
+        },
+        grid: {
+            top: '20%',
+            left: '10%',
+            right: '10%',
+            bottom: '20%',
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: newData.map(item => {
+                    return {
+                        value: item.name
+                    }
+                }),
+                axisLabel: {
+                    textStyle: {
+                        color: '#fff',
+                        opacity: '0.8',
+                        fontFamily: 'pingfang',
+                        // margin: 20
+                    }
+                },
+                axisTick: {
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '0.8'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '0.8'
+                    }
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    color: '#fff',
+                    opacity: 0.8,
+                    fontSize: 15,
+                    fontFamily: 'dinc',
+                    interval: 0,
+                    formatter: function (params) {
+                        if (index === 0) {
+                            return [
+                                params + '  ' + '{b|}'
+                            ].join('\n')
+                        }
+                    },
+                    // "margin": -100,
+                    rich: {
+                        b: {
+                            width: 8,
+                            height: 8,
+                            backgroundColor: {
+                                image: 'image/shadow.png'
+                            }
+                        }
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '.14',
+                        type: 'dashed'
+                    }
+                },
+            },
+
+        ],
+        series: [
+            {
+                name: title[4],
+                smooth: true,
+                data: newData.map(item => {
+                    return {
+                        value: item.value
+                    }
+                }),
+                type: 'line',
+                stack: '总量',
+                symbol: 'circle',//数据交叉点样式
+                // symbol: 'circle',
+                showSymbol: false,
+                itemStyle: {
+                    normal: {
+                        color: "#f00",
+                    }
+                },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0.2,
+                        color: 'rgba(255, 61, 41, 0.36)'
+                    }, {
+                        offset: 0.4,
+                        color: 'rgba(255, 170, 22, 0.36)'
+                    }, {
+                        offset: 0.6,
+                        color: 'rgba(243, 255, 46, 0.36)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(185, 255, 103, 0.36)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(0, 216, 25, 0.2)'
+                    }]),
+                },
+                lineStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0.2,
+                        color: 'rgba(255, 61, 41, 0.36)'
+                    }, {
+                        offset: 0.4,
+                        color: 'rgba(255, 170, 22, 0.36)'
+                    }, {
+                        offset: 0.6,
+                        color: 'rgba(243, 255, 46, 0.36)'
+                    }, {
+                        offset: 0.8,
+                        color: 'rgba(185, 255, 103, 0.36)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(0, 216, 25, 0.36)'
+                    }]),
+                }
+            },
+            {
+                type: 'line',
+                name: title[3],
+            },
+            {
+                type: 'line',
+                name: title[2],
+            },
+            {
+                type: 'line',
+                name: title[1],
+            },
+            {
+                type: 'line',
+                name: title[0],
+            }
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

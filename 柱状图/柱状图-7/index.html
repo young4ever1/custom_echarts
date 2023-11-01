@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "职住同区",
+            "value": [
+                64
+            ]
+        },
+        {
+            "name": "灵活就业",
+            "value": [
+                32
+            ]
+        },
+        {
+            "name": "跨境职住",
+            "value": [
+                2
+            ]
+        },
+        {
+            "name": "职住分离",
+            "value": [
+                2
+            ]
+        }
+    ];
+    function sum() {
+        let total = 0;
+        newData.forEach((item) => {
+            total += item.value[0];
+        })
+        return total;
+    }
+
+    newData.forEach((item) => {
+        item.point = (item.value[0] / sum() * 100).toFixed(0) + '%';
+    })
+    let option = {
+        // backgroundColor: '#000',
+        color: [
+            "#5292FD",
+            "#3698ba ",
+            "#074b83",
+            "#2479c6"
+        ],
+        title: {
+            show: true,//显示策略，默认值true,可选为：true（显示） | false（隐藏）
+            text: '单位:%',//主标题文本，'\n'指定换行,
+            x2: '50%',
+            textAlign: 'center',
+            y: '30%',
+            // fontSize:12,
+            textStyle: {
+                color: '#fff',
+                fontSize: 12,
+                fontWeight: 'normal',
+                fontFamily: 'pingfang'
+            }
+        },
+        grid: {
+            containLabel: true,
+            left: '5%',
+            right: '5%',
+            top: '15%',
+            bottom: '15%',
+        },
+        tooltip: {
+            show: false,
+        },
+        legend: {
+            right: '5%',
+            top: '30%',
+            itemGap: 20,
+            show: true,
+            selectMode: false,
+            textStyle: {
+                fontSize: 12,
+                color: '#fff'
+            }
+        },
+        xAxis: {
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+            splitLine: {
+                show: false,
+            },
+            axisLabel: {
+                show: false,
+            },
+            // data:['职住同区','灵活就业','跨境职住','职住分离']
+        },
+        yAxis: {
+            data: ["sss"],
+            axisLabel: {
+                show: false,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+            splitLine: {
+                show: false,
+            },
+        },
+
+        series: [],
+    }
+    newData.forEach((item, index) => {
+        option.series.push({
+            type: "bar",
+            name: item.name,
+            stack: "1",
+            label: {
+                normal: {
+                    show: true,
+                    position: [5, 32],
+                    formatter: function (params) {
+                        return `{value|${params.data}}`
+                    },
+                    textStyle: {
+                        color: "#fff",
+                        rich: {
+                            name: {
+                                fontSize: "12",
+                                fontWeight: 500,
+                                color: "#00EBFF",
+                                fontFamily: 'pingfang',
+                            },
+                            value: {
+                                fontSize: "18",
+                                fontWeight: 500,
+                                color: "#fff ",
+                                fontFamily: 'impact'
+                            },
+                        },
+                    },
+                },
+            },
+            barWidth: 30,
+            data: item.value,
+            itemStyle: {
+                normal: {
+                    barBorderRadius: [0],
+                },
+            },
+        });
+        if (index === 0) {
+            option.series[index].itemStyle.normal.barBorderRadius = [
+                3,
+                0,
+                0,
+                3,
+            ];
+        } else if (index === newData.length - 1) {
+            option.series[index].itemStyle.normal.barBorderRadius = [
+                0,
+                3,
+                3,
+                0,
+            ];
+        } else {
+            return;
+        }
+    });
+
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

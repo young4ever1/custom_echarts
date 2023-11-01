@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "自然灾害",
+            "value": [8,32,56]
+        },
+        {
+            "name": "事故灾害",
+            "value": [12,24,106]
+        },
+        {
+            "name": "公共卫生",
+            "value": [4,16,86]
+        },
+        {
+            "name": "社会安全",
+            "value": [20,80,387]
+        }
+    ];
+    let index = 0;
+    let datas = ['一级', '二级', '三级'];
+    let option = {
+        // backgroundColor: 'RGB(2,22,76)',
+        color: ['rgba(0, 235, 255, 0.6)', 'rgba(255, 234, 0, 0.6)', 'rgba(255, 89, 89, 0.6)'],
+        // animation: false,
+        "grid": {
+            top: '15%',
+            left: '15%',
+            right: '15%',
+            bottom: '20%',
+        },
+        tooltip: {
+            show: true,
+            confine: true,
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            extraCssText: 'box-shadow : 0 0 4px rgba(22, 156, 241, 1);color:#fff',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                var str = `<p style="color:#ffff;height:25px">${params[0].name}时</p>`;
+                params.forEach(item => {
+                    str += `<p style="width:100%;color:#ffff;"><span>${item.marker} ${item.seriesName}</span><span style="float:right;font-family:dinc;font-size:16px;margin-left:15px">${item.value}</span></p>`
+                })
+                return str;
+            }
+        },
+        "legend": {
+            "show": true,
+            // top: 25,
+            icon: 'stack',
+            top: '2%',
+            right: '15%',
+            itemWidth: 10,
+            itemHeight: 10,
+            itemGap: 20,
+            data: datas,
+            textStyle: {
+                color: '#fff'
+            },
+            selectedMode: false
+        },
+        "xAxis": [{
+            // "type": "category",
+            // boundaryGap: false,
+            "data": newData.map((item) => {
+                return {
+                    value: item.name
+                }
+            }),
+            "axisTick": {
+                show: true,
+                lineStyle: {
+                    color: '#fff',
+                    opacity: '0.28'
+                }
+            },
+            "nameTextStyle": {
+                "color": "#fff"
+            },
+            "axisLine": {
+                "show": false,
+                "lineStyle": {
+                    "color": "#fff",
+                    // opacity:''
+                },
+            },
+            "axisLabel": {
+                interval: 0,
+                "textStyle": {
+                    "color": "white",
+                    // "fontSize": '15px'
+                },
+                fontFamily: 'pingfang',
+                margin: 10,
+                formatter: function (value) {
+                    var ret = ""; //拼接加\n返回的类目项  
+                    var length = value.length;
+                    if (length === 4) {
+                        maxLength = 2; //每项显示文字个数  
+                    }
+                    if (length === 5) {
+                        maxLength = 3;
+                    }
+                    if (length === 6) {
+                        maxLength = 4;
+                    }
+                    var maxLength;//每项显示文字个数  
+                    var valLength = value.length; //X轴类目项的文字个数  
+                    var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数  
+                    if (rowN > 1) //如果类目项的文字大于5,  
+                    {
+                        for (var i = 0; i < rowN; i++) {
+                            var temp = ""; //每次截取的字符串  
+                            var start = i * maxLength; //开始截取的位置  
+                            var end = start + maxLength; //结束截取的位置  
+                            //这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧  
+                            temp = value.substring(start, end) + "\n";
+                            ret += temp; //凭借最终的字符串  
+                        }
+                        return ret;
+                    } else {
+                        return value;
+                    }
+                }
+            },
+
+        }],
+        "yAxis": [{
+            "type": "value",
+            "axisLabel": {
+                "textStyle": {
+                    "color": "white",
+                    "fontSize": '14px'
+                },
+                fontFamily: 'dinc',
+                fontWeight: 'normal',
+                // "formatter": "{value}",
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '  ' + '{b|}'
+                        ].join('\n')
+                    }
+                },
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        backgroundColor: {
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            "splitLine": {
+                "show": true,
+                "lineStyle": {
+                    "type": "dashed",
+                    "color": "#fff",
+                    opacity: "0.28"
+                }
+            },
+            // "axisLine": {
+            //     "show": true,
+            //     "lineStyle": {
+            //         "color": "#fff",
+            //         opacity:0.38
+            //     }
+            // },
+            "axisTick": {
+                "show": false,
+            },
+
+        }],
+        "series": [{
+            type: 'pictorialBar',
+            symbol: 'rect',
+            symbolSize: [10, 4],
+            symbolOffset: [-12, 0],
+            zlevel: 4,
+            tooltip: {
+                show: false
+            },
+            itemStyle: {
+                normal: {
+                    color: 'rgba(0, 235, 255, 1)'
+                }
+            },
+            data: newData.map((item) => {
+                return {
+                    value: item.value[0],
+                    symbolPosition: 'end'
+                }
+            }),
+        }, {
+            type: 'pictorialBar',
+            symbol: 'rect',
+            symbolSize: [10, 4],
+            symbolOffset: [0, 0],
+            zlevel: 4,
+            tooltip: {
+                show: false
+            },
+            itemStyle: {
+                normal: {
+                    color: 'rgba(255, 234, 0, 1)'
+                }
+            },
+            data: newData.map((item) => {
+                return {
+                    value: item.value[1],
+                    symbolPosition: 'end'
+                }
+            }),
+        }, {
+            type: 'pictorialBar',
+            symbol: 'rect',
+            symbolSize: [10, 4],
+            symbolOffset: [12, 0],
+            zlevel: 4,
+            tooltip: {
+                show: false
+            },
+            itemStyle: {
+                normal: {
+                    color: 'rgba(255, 89, 89, 1)'
+                }
+            },
+            data: newData.map((item) => {
+                return {
+                    value: item.value[2],
+                    symbolPosition: 'end'
+                }
+            }),
+        },
+        {
+            name: datas[0],
+            type: 'bar',
+            //silent: true,
+            "barWidth": "10",
+            // barGap: '-100%', // Make series be overlap
+            "data": newData.map((item) => {
+                return {
+                    value: item.value[0],
+                    symbolPosition: 'end'
+                }
+            }),
+        },
+        {
+            name: datas[1],
+            type: 'bar',
+            //silent: true,
+            "barWidth": "10",
+            // barGap: '-100%', // Make series be overlap
+            "data": newData.map((item) => {
+                return {
+                    value: item.value[1],
+                    symbolPosition: 'end'
+                }
+            }),
+        },
+        {
+            name: datas[2],
+            type: 'bar',
+            //silent: true,
+            "barWidth": "10",
+            // barGap: '-100%', // Make series be overlap
+            "data": newData.map((item) => {
+                return {
+                    value: item.value[2],
+                    symbolPosition: 'end'
+                }
+            }),
+        }
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

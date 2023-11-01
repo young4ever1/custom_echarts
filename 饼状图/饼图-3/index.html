@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "公交",
+            "value": 9
+        },
+        {
+            "name": "步行",
+            "value": 10
+        },
+        {
+            "name": "机动车",
+            "value": 11
+        },
+        {
+            "name": "骑行",
+            "value": 12
+        },
+        {
+            "name": "其他",
+            "value": 13
+        }
+    ]
+    let uploadedDataURL = 'image/shadow.png'
+
+    let option = {
+
+        // backgroundColor: '#013954',
+        // color: ,
+
+        tooltip: {
+            // type: 'axis'
+            confine: true,
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                console.log(params, 'xxxx');
+                return `<p style="color:#fff;">${params.marker} ${params.name}: <span style="font-family:'dincong';font-size:18px;"> ${params.value} </span>人</p>`;
+            }
+        },
+        grid: {
+            // top: '15%',
+            // left: '10%',
+            right: '10%',
+            // bottom: '22%',
+        },
+        graphic: [{
+            z: 4,
+            type: 'image',
+            id: 'logo',
+            left: '41%',
+            top: '32%',
+            z: -10,
+            bounding: 'raw',
+            rotation: 0, //旋转
+            origin: [60.5, 32.5], //中心点
+            scale: [1.0, 1.0], //缩放
+            style: {
+                image: uploadedDataURL,
+                width: itemResize(130),
+                height: itemResize(130),
+                opacity: 1
+            }
+        }],
+        series: [{
+            // name: '访问来源',
+            type: 'pie',
+            radius: ['40%', '55%'],
+            center: ['50%', '50%'],
+            data: newData,
+            // roseType: 'angle',
+            label: {
+                color: '#5B7DDB',
+                position: 'outside',
+                formatter: function (data) {
+                    return '\n{icon|}\n' + '{value|' + data.name + "}" + " {name|" + data.percent.toFixed(0) + "%}";
+                },
+                rich: {
+                    icon: {
+                        height: 5,
+                        width: 5,
+                        lineHeight: 5,
+                        padding: [0, -5],
+                        borderRadius: 5,
+                        // 圆点颜色和饼图块状颜色一致
+                        backgroundColor: 't',
+                    },
+                    name: {
+                        // fontSize: nowSize(16),
+                        fontSize: 16,
+                        padding: [-itemResize(118), -itemResize(30), -itemResize(55), itemResize(3)],
+                        color: '#ffffff',
+                        fontFamily: 'impact'
+                    },
+                    value: {
+                        fontSize: 14,
+                        // fontSize: itemResize(14),
+                        padding: [-itemResize(80), -itemResize(0), -itemResize(15), -itemResize(50)],
+                        color: '#00D2FF',
+                        // fontWeight: 'bold',
+                        fontFamily: 'pingfang'
+                    }
+                }
+            },
+            labelLine: {
+                color: '#f00',
+                normal: {
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '0.24'
+                    },
+                    length: itemResize(50),
+                    length2: itemResize(60),
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        var colorList = ['#0078FF', '#00EBFF', '#00FF84', '#D965FF', '#68A4FF', '#9CDA44'];
+                        return colorList[params.dataIndex % colorList.length];
+                    }
+                }
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+                return Math.random() * 200;
+            }
+        },
+        {
+            tooltip: {
+                show: false
+            },
+            itemStyle: {
+                normal: {
+                    color: 'rgba(255, 255, 255, 0.38)',
+                }
+            },
+            type: 'pie',
+            hoverAnimation: false,
+            radius: ['59%', '60%'],
+            center: ["50%", "50%"],
+            label: {
+                normal: {
+                    show: false
+                }
+            },
+            data: [{
+                value: 1,
+            }],
+            z: -1
+        },
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

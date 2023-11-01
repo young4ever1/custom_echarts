@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+    <script src="../../js/liquidFill.js"></script>
+
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            name: '监测中心站',
+            value: [12]
+        },
+        {
+            name: '调查中心',
+            value: [12]
+        },
+        {
+            name: '核与辐射安全中心',
+            value: [12]
+        },
+        {
+            name: '宣传教育中心',
+            value: [12]
+        }
+    ]
+    let radius = [0, '45%']
+    let radius1 = ['47%', '55%'];
+    let radius2 = ['59%', '61%'];
+    let radius3 = ['61.5%', '63.5%'];
+    let radius4 = ['64%', '67%'];
+
+    let value = 50;
+    let option = {
+        backgroundColor: "#000",
+        title: [{
+            text: value + '%',
+            x: 'center',
+            top: '52%',
+            textStyle: {
+                color: '#ffffff',
+                fontSize: itemResize(25),
+                fontWeight: '100',
+            },
+            z: 100
+        }, {
+            text: '成功率',
+            x: 'center',
+            top: '42%',
+            textStyle: {
+                fontSize: itemResize(30),
+                color: '#fdf914',
+                fontFamily: 'Lato',
+                foontWeight: '600',
+            },
+            z: 100
+        }],
+        polar: {
+            radius: radius1,
+            center: ['50%', '50%'],
+        },
+        angleAxis: {
+            max: 100,
+            show: false,
+        },
+        radiusAxis: {
+            type: 'category',
+            show: true,
+            axisLabel: {
+                show: false,
+            },
+            axisLine: {
+                show: false,
+
+            },
+            axisTick: {
+                show: false
+            },
+        },
+        series: [
+            {
+                name: '',
+                type: 'bar',
+                roundCap: true,
+                barWidth: 60,
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(0, 0, 0,1)',
+                },
+                data: [value],
+                coordinateSystem: 'polar',
+
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                            offset: 0,
+                            color: '#00FFC0'
+                        }, {
+                            offset: 1,
+                            color: '#136AED'
+                        }]),
+                    }
+                }
+
+            },
+            {
+                name: '',
+                type: 'pie',
+                startAngle: 90,
+                radius: radius2,
+                hoverAnimation: false,
+                center: ['50%', '50%'],
+                itemStyle: {
+                    normal: {
+                        labelLine: {
+                            show: false
+                        },
+                        color: 'rgba(34,72,162, .5)',
+                        shadowBlur: 100,
+                        shadowColor: 'rgba(34,72,162, 1)',
+                    }
+                },
+                data: [{
+                    value: 100,
+
+                }]
+            },
+            {
+                name: '',
+                type: 'pie',
+                startAngle: 90,
+                radius: radius3,
+                hoverAnimation: false,
+                center: ['50%', '50%'],
+                itemStyle: {
+                    normal: {
+                        labelLine: {
+                            show: false
+                        },
+                        color: 'rgba(34,72,162, .7)',
+                        shadowBlur: 100,
+                        shadowColor: 'rgba(34,72,162, 1)',
+                    }
+                },
+                data: [{
+                    value: 100,
+
+                }]
+            },
+            {
+                name: '',
+                type: 'pie',
+                startAngle: 90,
+                radius: radius4,
+                hoverAnimation: false,
+                center: ['50%', '50%'],
+                itemStyle: {
+                    normal: {
+                        labelLine: {
+                            show: false
+                        },
+                        color: 'rgba(34,72,162, 0.9)',
+                        shadowBlur: 300,
+                        shadowColor: 'rgba(100,143,244, 0.5)',
+                    }
+                },
+                data: [{
+                    value: 100,
+
+                }]
+            },
+            {
+                type: 'pie',
+                hoverAnimation: false,
+                legendHoverLink: false,
+                radius: radius,
+                z: 10,
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                // 模拟中间文字
+                label: {
+                    show: false,
+                },
+                silent: true,
+                data: [{
+                    value: 0,
+                    itemStyle: {
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 0.5,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'rgba(2, 11, 30, 1)' // 0% 处的颜色
+                            }, {
+                                offset: .9,
+                                color: 'rgba(2, 11, 30, 1)' // 50% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'rgba(19, 106, 237, 0.3)' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                    }
+                }]
+            },
+        ]
+    }
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

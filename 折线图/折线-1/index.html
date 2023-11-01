@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "2021-2-20 01:00:00",
+            "data": [
+                4.3680,
+                0.0130
+            ]
+        },
+        {
+            "name": "2021-2-20 02:00:00",
+            "data": [
+                5.6680,
+                0.0195
+            ]
+        },
+        {
+            "name": "2021-2-20 03:00:00",
+            "data": [
+                6.2790,
+                0.0325
+            ]
+        },
+        {
+            "name": "2021-2-20 04:00:00",
+            "data": [
+                6.6885,
+                0.0715
+            ]
+        },
+        {
+            "name": "2021-2-20 05:00:00",
+            "data": [
+                7.0525,
+                0.3445
+            ]
+        },
+        {
+            "name": "2021-2-20 06:00:00",
+            "data": [
+                7.7350,
+                0.9165
+            ]
+        },
+        {
+            "name": "2021-2-20 07:00:00",
+            "data": [
+                8.4175,
+                1.0010
+            ]
+        },
+        {
+            "name": "2021-2-20 08:00:00",
+            "data": [
+                13.7280,
+                1.0920
+            ]
+        },
+        {
+            "name": "2021-2-20 09:00:00",
+            "data": [
+                15.9770,
+                1.7810
+            ]
+        },
+        {
+            "name": "2021-2-20 10:00:00",
+            "data": [
+                10.4585,
+                2.0735
+            ]
+        },
+        {
+            "name": "2021-2-20 11:00:00",
+            "data": [
+                8.4760,
+                1.3585
+            ]
+        },
+        {
+            "name": "2021-2-20 12:00:00",
+            "data": [
+                6.1555,
+                1.0985
+            ]
+        },
+        {
+            "name": "2021-2-20 13:00:00",
+            "data": [
+                5.9735,
+                0.7995
+            ]
+        },
+        {
+            "name": "2021-2-20 14:00:00",
+            "data": [
+                5.1415,
+                0.7800
+            ]
+        },
+        {
+            "name": "2021-2-20 15:00:00",
+            "data": [
+                4.3485,
+                0.6695
+            ]
+        },
+        {
+            "name": "2021-2-20 16:00:00",
+            "data": [
+                5.3365,
+                0.5655
+            ]
+        },
+        {
+            "name": "2021-2-20 17:00:00",
+            "data": [
+                6.9810,
+                0.6955
+            ]
+        },
+        {
+            "name": "2021-2-20 18:00:00",
+            "data": [
+                8.4110,
+                1.0270
+            ]
+        },
+        {
+            "name": "2021-2-20 19:00:00",
+            "data": [
+                10.4585,
+                1.3650
+            ]
+        },
+        {
+            "name": "2021-2-20 20:00:00",
+            "data": [
+                13.2535,
+                0.9035
+            ]
+        },
+        {
+            "name": "2021-2-20 21:00:00",
+            "data": [
+                8.4110,
+                0.6175
+            ]
+        },
+        {
+            "name": "2021-2-20 22:00:00",
+            "data": [
+                7.0460,
+                0.4810
+            ]
+        },
+        {
+            "name": "2021-2-20 23:00:00",
+            "data": [
+                6.8120,
+                0.2080
+            ]
+        },
+        {
+            "name": "2021-2-20 24:00:00",
+            "data": [
+                4.9660,
+                0.0715
+            ]
+        }
+    ];
+    let index = 0;
+    let option = {
+        // backgroundColor: '#000',
+        color: ['#00DDF0', '#00FF06'],
+        axisPointer: {
+            link: {
+                xAxisIndex: "all",
+            },
+        },
+        tooltip: {
+            confine: true,
+            show: true,
+            trigger: "axis",
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);color:#fff',
+            color: '#fff',
+            borderWidth: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            axisPointer: {
+                type: "line",
+                lineStyle: {
+                    type: "dashed",
+                },
+            },
+            formatter: function (value) {
+                // console.log(value);
+                let str = `<p style="color:#ffff;">${value[0].name}</p>`;
+                value.forEach(item => {
+                    str += `<p style="width:100%;color:#ffff;"><span>${item.marker} ${item.seriesName}</span><span style="float:right;font-family:dincong;font-size:16px">${item.value}人</span></p>`
+                })
+                return str;
+            }
+        },
+        legend: {
+            show: true,
+            data: ['全方式', '公交'],
+            // type:'stack',
+            icon: "rect",
+            itemWidth: 8,
+            right: '5',
+            top: '3%',
+            itemHeight: 8,
+            textStyle: {
+                color: '#fff',
+                opacity: '0.8',
+                // top:20
+            }
+        },
+        grid: [{
+            left: 30,
+            right: 20,
+            top: '15%',
+            containLabel: true,
+            bottom: '45%',
+        },
+        {
+            left: 30,
+            containLabel: true,
+            right: 20,
+            top: '60%',
+            bottom: '15%'
+        },
+        ],
+        xAxis: [{
+            gridIndex: 0,
+            type: "category",
+            boundaryGap: false,
+            axisLine: {
+                onZero: false,
+                lineStyle: {
+                    color: '#fff',
+                    opacity: '0.8'
+                }
+            },
+            axisTick: {
+                lineStyle: {
+                    color: '#fff',
+                    opacity: '0.8'
+                }
+            },
+            axisLabel: {
+                // margin:15,
+                fontFamily: 'pingfang',
+                textStyle: {
+                    fontSize: '12',
+                    color: '#fff',
+                    opacity: '0.8'
+                },
+                // margin: 15,
+                // padding:[10,0,15,0],
+                formatter: (value, index) => {
+                    let hour = new Date(value).getHours();
+                    return (hour + "").padStart(2, 0) + "时";
+                },
+            },
+            data: newData.map(item => {
+                return {
+                    value: item.name
+                }
+            })
+        },
+        {
+            gridIndex: 1,
+            type: "category",
+            position: 'top',
+            boundaryGap: false,
+            axisLine: {
+                lineStyle: {
+                    color: '#fff',
+                    opacity: '0.8'
+                }
+            },
+            axisTick: {
+                lineStyle: {
+                    color: '#fff',
+                    opacity: '0.8'
+                }
+            },
+            // position:,
+            axisLabel: {
+                // margin: 10,
+                show: false,
+                formatter: (value, index) => {
+                    let hour = new Date(value).getHours();
+                    return (hour + "").padStart(2, 0) + "时";
+                },
+            },
+            data: newData.map(item => {
+                return {
+                    value: item.name
+                }
+            })
+        },
+        ],
+        yAxis: [{
+            max: 20,
+            min: 0,
+            splitNumber: 4,
+            gridIndex: 0,
+            scale: true,
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#fff',
+                    opacity: 0.8
+                }
+            },
+            axisLabel: {
+                margin: 20,
+                fontFamily: 'dinc',
+                textStyle: {
+                    fontSize: '14',
+                    color: '#fff',
+                    opacity: '0.8'
+                },
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '   ' + '{b|}'
+                        ].join('/n')
+                    }
+                },
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        margin: 10,
+                        backgroundColor: {
+                            // 绝对路径
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            // splitLine: {
+            //   show: false,
+            // },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#fff',
+                    opacity: 0.38
+                }
+            },
+        },
+        {
+            max: 20,
+            min: 0,
+            splitNumber: 4,
+            gridIndex: 1,
+            scale: true,
+            inverse: true,
+            axisLabel: {
+                margin: 20,
+                fontFamily: 'dinc',
+                textStyle: {
+                    fontSize: '14',
+                    color: '#fff',
+                    opacity: '0.8'
+                },
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '   ' + '{b|}'
+                        ].join('/n')
+                    }
+                },
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        margin: 10,
+                        backgroundColor: {
+                            // 绝对路径
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#fff',
+                    opacity: 0.38
+                }
+            },
+        },
+        ],
+        series: [
+            {
+                name: "全方式",
+                type: "line",
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                smooth: true,
+                symbol: "none", //去掉圆点
+                // showSymbol:false, //关闭线上默认的圆点
+                // lineStyle:{
+                //   color:'#00DDF0'
+                // },
+                areaStyle: {
+                    normal: {//自定义颜色，渐变色填充折线图区域
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1,//变化度
+                            //渐变色 
+                            [{
+                                offset: 0,
+                                color: 'rgba(0, 221, 240, 0.16)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(0, 221, 240, 0.16)'
+                            }]),
+                    },
+                },
+                data: newData.map(item => {
+                    return {
+                        value: item.data[0]
+                    }
+                })
+            },
+            {
+                name: "公交",
+                type: "line",
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                smooth: true,
+                symbol: "none", //去掉圆点
+                areaStyle: {
+                    normal: {//自定义颜色，渐变色填充折线图区域
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1,//变化度
+                            //渐变色 
+                            [{
+                                offset: 0,
+                                color: 'rgba(0, 221, 240, 0.16)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(0, 221, 240, 0.16)'
+                            }]),
+                    },
+                },
+                data: newData.map(item => {
+                    return {
+                        value: item.data[1]
+                    }
+                })
+            },
+        ],
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

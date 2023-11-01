@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            name: '监测中心站',
+            value: [12]
+        },
+        {
+            name: '调查中心',
+            value: [12]
+        },
+        {
+            name: '核与辐射安全中心',
+            value: [12]
+        },
+        {
+            name: '宣传教育中心',
+            value: [12]
+        }
+    ]
+    let option = {
+        backgroundColor: 'rgba(39,46,74)',
+        tooltip: {
+            trigger: 'item',
+        },
+        grid: {
+            left: '10%',
+            top: '15%',
+            right: '5%',
+            bottom: '13%',
+        },
+        xAxis: [{
+            data: newData.map((item) => {
+                return item.name;
+            }),
+            axisLabel: {
+                textStyle: {
+                    color: 'rgba(122,173,212,1)',
+                    fontSize: 14
+                },
+                margin: 10, //刻度标签与轴线之间的距离。
+                interval: 0
+            },
+            // interval: true,
+            axisLine: {
+                show: true, //不显示x轴
+                lineStyle: {
+                    color: 'rgba(53,65,95,1)',
+                }
+            },
+            axisTick: {
+                show: false //不显示刻度
+            },
+            // boundaryGap: true,
+            splitLine: {
+                show: false
+            }
+        }],
+        yAxis: [{
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: 'rgba(53,65,95,1)',
+                    type: 'dashed'
+                }
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            axisLabel: {
+                textStyle: {
+                    color: 'rgba(122,173,212,1)',
+                    fontSize: 14
+                },
+            }
+        }],
+        series: [
+            {//柱底圆片
+                name: "",
+                type: "pictorialBar",
+                symbolSize: [43, 20],//调整截面形状
+                symbolOffset: [0, 0],
+                barWidth: 43,
+                z: 12,
+                itemStyle: {
+                    "normal": {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: "rgba(0,171,255,1)"
+                        },
+                        {
+                            offset: 1,
+                            color: "rgba(0,171,255,1)"
+                        }
+                        ], false)
+                    }
+                },
+                data: newData.map((item) => {
+                    return item.value[0];
+                }),
+            },
+            //柱体
+            {
+                name: "",
+                type: "pictorialBar",
+                barWidth: 43,
+                symbolOffset: [0, -10],
+                symbol: 'path://M0,10 L10,10 L5,0 L0,10 z',
+                itemStyle: {
+                    normal: {
+                        //渐变色
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: "rgba(0,171,255,0.4)"
+                        },
+                        {
+                            offset: 1,
+                            color: "rgba(0,171,255,0.8)"
+                        }
+                        ])
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        position: "top",
+                        textStyle: {
+                            color: "rgba(0,171,255,1)",
+                            fontSize: 14
+                        }
+                    }
+                },
+                data: newData.map((item) => {
+                    return item.value[0];
+                }),
+            }
+        ]
+    }
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

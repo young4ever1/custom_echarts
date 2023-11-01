@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name":"老街",
+            "value":70
+        },
+        {
+            "name":"深圳北",
+            "value":40
+        },
+        {
+            "name":"坂田",
+            "value":35
+        },
+        {
+            "name":"福田",
+            "value":80
+        },
+        {
+            "name":"松岗",
+            "value":42
+        },
+        {
+            "name":"竹子林",
+            "value":24
+        }
+    ];
+    let index = 0;
+    let option = {
+        grid: {
+            top: '30%',
+            left: '15%',
+            right: '10%',
+            bottom: '15%',
+        },
+        // backgroundColor: '#011c3a',
+        tooltip: {
+            // trigger: 'item',
+            trigger: 'item',
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                console.log(params, 'xxxx');
+
+                return `<p style="color:#fff;">${params.marker} ${params.name}: 数量指数<span style="font-family:'dinc';font-size:18px;"> ${params.value} </span></p>`;
+            }
+        },
+        xAxis: {
+            data: newData.map((item) => {
+                return {
+                    value: item.name
+                }
+            }),
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    color: '#fff',
+                    opacity: 0.38
+                }
+            },
+            axisLabel: {
+                color: '#fff',
+                opacity: 0.8,
+                // fontSize: 14,
+                fontFamily: 'pingfang',
+                // margin: 15
+            },
+            axisTick: {
+                show: false
+            },
+            interval: 0
+        },
+        yAxis: {
+            // type: 'category',
+            // name: "单位:次",
+            axisLabel: {
+                color: '#fff',
+                fontSize: 14,
+                fontFamily: 'dinc',
+                interval: 0,
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '  ' + '{b|}'
+                        ].join('\n')
+                    }
+                },
+                // "margin": -100,
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        backgroundColor: {
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: '#3d5269'
+                }
+            },
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    color: '#2d3d53'
+                }
+            },
+
+        },
+        series: [{
+            type: 'pictorialBar',
+            symbol: 'rect',
+            symbolSize: [15, 4],
+            symbolOffset: [0, -6],
+            zlevel: 4,
+            tooltip: {
+                show: false
+            },
+            itemStyle: {
+                normal: {
+                    color: '#31A0FF'
+                }
+            },
+            data: newData.map((item) => {
+                return {
+                    value: item.value,
+                    symbolPosition: 'end'
+                }
+            }),
+        }, {
+            type: 'bar',
+            barWidth: 15,
+            itemStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(0, 168, 255, 0.76)'
+                    }, {
+                        offset: 1,
+                        color: 'rgba(0, 72, 255, 0)'
+                    }], false),
+                    label: {
+                        show: true, //开启显示
+                        position: 'top', //在上方显示
+                        textStyle: { //数值样式
+                            color: '#fff',
+                            fontSize: 16,
+                            fontFamily: 'dinc'
+                        }
+                    }
+                }
+            },
+            data: newData.map((item) => {
+                return {
+                    value: item.value
+                }
+            }),
+        }]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

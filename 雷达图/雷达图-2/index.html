@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData1 = [
+        {
+            "name": "",
+            "value": [
+                480,
+                240,
+                580,
+                100,
+                180,
+                280
+            ]
+        },
+        {
+            "name": "",
+            "value": [
+                400,
+                360,
+                380,
+                460,
+                220,
+                540
+            ]
+        },
+        {
+            "name": "",
+            "value": [
+                140,
+                480,
+                360,
+                120,
+                280,
+                200
+            ]
+        }
+    ]
+    let newData2 = newData1.map(item => {
+        return {
+            value: item.value.sort((a, b) => {
+                return b - a
+            })
+        }
+    })
+    let maxNum = [];
+    newData2.forEach(item => {
+        maxNum.push(item.value[0]);
+    })
+    console.log(maxNum);
+    let newMaxNum = maxNum.sort((a, b) => {
+        return b - a;
+    })
+    let option = {
+        // backgroundColor: "rgba(41, 60, 85,.9)",
+        color: ['#00EBFF', '#DE00FF', '#F0FF00'], // 图例的颜色
+        // title: {
+        //     text: '雷达图'
+        // },
+        grid: {
+            top: '10%',
+            left: '10%',
+            bottom: '10%',
+            right: '10%'
+        },
+        // tooltip: {},
+        legend: {
+            top: 20,
+            itemWidth: 12,
+            itemHeight: 12,
+            data: ['预算分配（Allocated Budget）'],
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        radar: {
+            name: { // 每个角的字体颜色
+                textStyle: {
+                    color: '#FFFFFF',
+                    fontFamily: 'dinc',
+                    fontSize: 16
+                }
+            },
+            radius: 100,
+            startAngle: 60,
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.3)',
+                }, // 背景网格线颜色
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    width: 1,
+                    color: ['rgba(255, 255, 255, 0.3)']
+                    // 图表背景网格线的颜色
+                }
+            },
+            splitArea: { // 雷达图背景颜色
+                areaStyle: {
+                    color: ['rgba(255, 255, 255, 0.1)']
+                }
+            },
+            indicator: [{
+                name: '60',
+                max: newMaxNum[0] + 200,
+                // min: 1
+            }, {
+                name: '0',
+                max: newMaxNum[0] + 200
+            }, {
+                name: '300',
+                max: newMaxNum[0] + 200
+            }, {
+                name: '240',
+                max: newMaxNum[0] + 200
+            }, {
+                name: '180',
+                max: newMaxNum[0] + 200
+            }, {
+                name: '120',
+                max: newMaxNum[0] + 200
+            }]
+        },
+        series: [{
+            name: '',
+            type: 'radar',
+            symbolSize: 2,
+            // symbol: "none",
+            itemStyle: {
+                normal: {
+                    // color: 各异,
+                    // symbole:'none',
+                    lineStyle: { // 鼠标移上的网边框样式
+                        width: 2
+                    },
+                    areaStyle: {
+                        type: 'default'
+                    }
+                }
+            },
+            data: newData1
+        }],
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

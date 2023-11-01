@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "海军广场街道",
+            "value": [12, 4, 2]
+        },
+        {
+            "name": "葵英街道",
+            "value": [16, 5, 1]
+        },
+        {
+            "name": "老虎滩街道",
+            "value": [9, 3, 1]
+        },
+        {
+            "name": "青泥洼桥街道",
+            "value": [14, 8, 2]
+        },
+        {
+            "name": "人民路街道",
+            "value": [8, 4, 2]
+        },
+        {
+            "name": "桃源街道",
+            "value": [13, 6, 4]
+        }
+    ];
+    let index = 0;
+    let option = {
+        // backgroundColor: '#0D1A39',
+        color: ['rgba(0, 235, 255, 0.6)', 'rgba(220, 100, 255, 0.6)', 'rgba(255, 89, 89, 0.6)'],
+        legend: {
+            right: '8%',
+            top: '3%',
+            itemGap: 20,
+            textStyle: {
+                color: 'rgba(255, 255, 255, 0.8)',
+            },
+            icon: 'stack',
+            itemWidth: 10,
+            itemHeight: 10,
+            data: ['一般损坏', '严重损坏', '房屋倒塌'],
+            selectedMode: false
+        },
+        tooltip: {
+            show: true,
+            confine: true,
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            extraCssText: 'box-shadow : 0 0 4px rgba(22, 156, 241, 1);color:#fff',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (params) {
+                var str = `<p style="color:#ffff;height:25px">${params[0].name}时</p>`;
+                params.forEach(item => {
+                    str += `<p style="width:100%;color:#ffff;"><span>${item.marker} ${item.seriesName}</span><span style="float:right;font-family:dinc;font-size:16px;margin-left:15px">${item.value}</span></p>`
+                })
+                return str;
+            }
+        },
+        grid: {
+            left: '4%',
+            // left: '3%',
+            right: '8%',
+            bottom: '8%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            axisLabel: {
+                textStyle: {
+                    color: "rgba(255, 255, 255, 0.8)",
+                    opcity: '0.8',
+                    fontFamily: 'dinc',
+                    fontSize: '15'
+                }
+            },
+            splitLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.18)',
+                    opcity: '0.38',
+                    type: 'dashed'
+                }
+            }
+        },
+        yAxis: {
+            type: 'category',
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.18)',
+                    opcity: '0.18'
+                }
+            },
+            axisLabel: {
+                textStyle: {
+                    color: "rgba(255, 255, 255, 0.8)",
+                    opcity: '0.8',
+                    fontFamily: 'pingfang',
+                    fontSize: '12'
+                }
+            },
+            data: newData.map(item => {
+                return {
+                    value: item.name
+                }
+            }),
+        },
+        series: [
+            {
+                name: '一般损坏',
+                type: 'bar',
+                data: newData.map(item => {
+                    return {
+                        value: item.value[0]
+                    }
+                }),
+            },
+            {
+                name: '严重损坏',
+                type: 'bar',
+                data: newData.map(item => {
+                    return {
+                        value: item.value[1]
+                    }
+                }),
+            },
+            {
+                name: '房屋倒塌',
+                type: 'bar',
+                data: newData.map(item => {
+                    return {
+                        value: item.value[2]
+                    }
+                }),
+            }
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

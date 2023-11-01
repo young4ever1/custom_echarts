@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "居住",
+            "value": [60.06, 60.04, 59.57, 59.91, 55.89, 45.81, 29.64, 10.82, 9.12, 9.12, 9.12, 9.12, 9.12, 10.12, 11.12, 12.12, 13.12, 29, 35, 45, 54, 60.53, 58.83, 59.43]
+        },
+        {
+            "name": "工作",
+            "value": [1, 1, 1, 1, 10, 20, 30, 28, 28, 28, 30, 28, 30, 29, 29, 29, 30, 30, 30, 30, 28, 19, 10, 1]
+        },
+        {
+            "name": "到访",
+            "value": [0.02, 0.02, 0.03, 0.03, 0.13, 1.01, 4.25, 6.37, 2.99, 1.33, 1.51, 1.41, 1.46, 1.46, 1.62, 1.98, 3.97, 5.66, 2.96, 1.89, 1.37, 0.43, 0.3, 0.1]
+        }
+    ];
+    let index = 0;
+    newData[0].color = 'RGBA(192, 81, 255, .28)',
+        newData[1].color = 'rgba(0, 221, 240, .28)',
+        newData[2].color = 'RGBA(241, 163, 82, 28)'
+    // 折线数据
+    let newList = newData.map(item => {
+        return {
+            name: item.name,
+            data: item.value,
+            type: 'line',
+            stack: '总量',
+            areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0.5,
+                    color: item.color
+                    // opacity: 0.36
+                }, {
+                    offset: 1,
+                    color: 'rgba(204, 0, 255,0)'
+                }]),
+            },
+        }
+    })
+    // 标题内容
+    let title = [];
+    newData.forEach(item => {
+        title.push(item.name);
+    })
+    let option = {
+        // backgroundColor: '#000',
+        color: ['RGBA(192, 81, 255, 1)', 'rgba(0, 221, 240, 1)', 'RGBA(241, 163, 82, 1)'],
+        legend: {
+            data: title,
+            icon: 'roundRect',
+            itemGap: 22,
+            itemWidth: 20,
+            itemHeight: 10,
+            // itemGap:10,
+            borderRadius: 10,
+            right: '10%',
+            top: '10%',
+            textStyle: {
+                color: '#fff',
+                opacity: '0.85',
+                fontFamily: 'pingfang'
+            }
+        },
+        /**
+         *  弹出框更改。
+         */
+        tooltip: {
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);line-height:20px',
+            show: true,
+            trigger: 'axis',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderRadius: 5,
+            borderWidth: 0,
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+                }
+            },
+            formatter: function (params) {
+                let str = '';
+                for (let i = 0; i < params.length; i++) {
+                    str += `<p style="color:#fff;">${params[i].marker} ${params[i].seriesName}: 出行量<span style="font-family:'dinc';font-size:18px;"> ${params[i].value} </span>人</p>`
+                }
+                return str;
+            }
+            // formatter: 
+        },
+        grid: {
+            top: '20%',
+            left: '15%',
+            right: '10%',
+            bottom: '15%',
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+                axisLabel: {
+                    textStyle: {
+                        color: '#fff',
+                        opacity: '0.8',
+                        fontFamily: 'pingfang',
+                        margin: 20,
+                        fontSize: itemResize(14),
+                    fontFamily: 'dinc',
+                    }
+                },
+                axisTick: {
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '0.8'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '0.8'
+                    }
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    color: '#fff',
+                    opacity: 0.8,
+                    fontSize: itemResize(14),
+                    fontFamily: 'dinc',
+                    interval: 0,
+                    formatter: function (params) {
+                        if (index === 0) {
+                            return [
+                                params + '  ' + '{b|}'
+                            ].join('\n')
+                        }
+                    },
+                    // "margin": -100,
+                    rich: {
+                        b: {
+                            width: 8,
+                            height: 8,
+                            backgroundColor: {
+                                image: '../image/sj.png'
+                            }
+                        }
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#fff',
+                        opacity: '.14',
+                        type: 'dashed'
+                    }
+                },
+            },
+
+        ],
+        series: newList
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

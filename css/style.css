@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #344b58;
+}
+#echarts_one {
+  width: 100%;
+  height: 100%;
+}
+
+@font-face {
+  font-family: dinc;
+  src: url("../font/DIN\ Condensed\ Bold.woff.ttf");
+}
+
+@font-face {
+  font-family: impact;
+  src: url("../font/impact.ttf");
+}
+
+@font-face {
+  font-family: pingfang;
+  src: url("../font/PingFang\ Bold.ttf");
+}

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "职住同区",
+            "value": [
+                64
+            ]
+        },
+        {
+            "name": "灵活就业",
+            "value": [
+                32
+            ]
+        },
+        {
+            "name": "跨境职住",
+            "value": [
+                2
+            ]
+        },
+        {
+            "name": "职住分离",
+            "value": [
+                2
+            ]
+        }
+    ];
+    var formatUtil = echarts.format;
+    var num1 = 0;
+    var dtlData = [
+        {
+            name: '福田罗湖',
+            value: 4.67,
+            children: [{
+                name: '业态指数',
+                value: 0.76
+            }, {
+                name: '拥堵指数',
+                value: 0.69
+            }, {
+                name: '活力指数',
+                value: 0.58
+            }, {
+                name: '联系指数',
+                value: 0.58
+            }, {
+                name: '可达性指数',
+                value: 0.57
+            }, {
+                name: '客流指数',
+                value: 0.57
+            }, {
+                name: '经济指数',
+                value: 0.5
+            }, {
+                name: '人口指数',
+                value: 0.42
+            }]
+        }, {
+            name: '前海宝安',
+            value: 4.92,
+            children: [{
+                name: '业态指数',
+                value: 0.83
+            }, {
+                name: '拥堵指数',
+                value: 0.79
+            }, {
+                name: '活力指数',
+                value: 0.8
+            }, {
+                name: '联系指数',
+                value: 0.83
+            }, {
+                name: '可达性指数',
+                value: 0.81
+            }, {
+                name: '客流指数',
+                value: 0.86
+            }, {
+                name: '经济指数',
+                value: 0.77
+            }, {
+                name: '人口指数',
+                value: 0.85
+            }]
+        }, {
+            name: '龙华',
+            value: 2.53,
+            children: [{
+                name: '业态指数',
+                value: 0.38
+            }, {
+                name: '拥堵指数',
+                value: 0.26
+            }, {
+                name: '活力指数',
+                value: 0.39
+            }, {
+                name: '联系指数',
+                value: 0.28
+            }, {
+                name: '可达性指数',
+                value: 0.21
+            }, {
+                name: '客流指数',
+                value: 0.28
+            }, {
+                name: '经济指数',
+                value: 0.33
+            }, {
+                name: '人口指数',
+                value: 0.4
+            }]
+        }, {
+            name: '光明',
+            value: 1.04,
+            children: [{
+                name: '业态指数',
+                value: 0.16
+            }, {
+                name: '拥堵指数',
+                value: 0.1
+            }, {
+                name: '活力指数',
+                value: 0.14
+            }, {
+                name: '联系指数',
+                value: 0.12
+            }, {
+                name: '可达性指数',
+                value: 0.08
+            }, {
+                name: '客流指数',
+                value: 0.13
+            }, {
+                name: '经济指数',
+                value: 0.13
+            }, {
+                name: '人口指数',
+                value: 0.18
+            }]
+        }, {
+            name: '龙岗',
+            value: 1.94,
+            children: [{
+                name: '业态指数',
+                value: 0.27
+            }, {
+                name: '拥堵指数',
+                value: 0.2
+            }, {
+                name: '活力指数',
+                value: 0.27
+            }, {
+                name: '联系指数',
+                value: 0.23
+            }, {
+                name: '可达性指数',
+                value: 0.18
+            }, {
+                name: '客流指数',
+                value: 0.23
+            }, {
+                name: '经济指数',
+                value: 0.25
+            }, {
+                name: '人口指数',
+                value: 0.31
+            }]
+        }, {
+            name: '坪山',
+            value: 0.42,
+            children: [{
+                name: '业态指数',
+                value: 0.02
+            }, {
+                name: '拥堵指数',
+                value: 0.01
+            }, {
+                name: '活力指数',
+                value: 0.02
+            }, {
+                name: '联系指数',
+                value: 0.01
+            }, {
+                name: '可达性指数',
+                value: 0.01
+            }, {
+                name: '客流指数',
+                value: 0.02
+            }, {
+                name: '经济指数',
+                value: 0.02
+            }, {
+                name: '人口指数',
+                value: 0.31
+            }]
+        }, {
+            name: '盐田',
+            value: 0.24,
+            children: [{
+                name: '业态指数',
+                value: 0.03
+            }, {
+                name: '拥堵指数',
+                value: 0.02
+            }, {
+                name: '活力指数',
+                value: 0.04
+            }, {
+                name: '联系指数',
+                value: 0.03
+            }, {
+                name: '可达性指数',
+                value: 0.02
+            }, {
+                name: '客流指数',
+                value: 0.03
+            }, {
+                name: '经济指数',
+                value: 0.03
+            }, {
+                name: '人口指数',
+                value: 0.04
+            }]
+        }, {
+            name: '航空城',
+            value: 1,
+            children: [{
+                name: '业态指数',
+                value: 0.1
+            }, {
+                name: '拥堵指数',
+                value: 0.23
+            }, {
+                name: '活力指数',
+                value: 0.15
+            }, {
+                name: '联系指数',
+                value: 0.11
+            }, {
+                name: '可达性指数',
+                value: 0.07
+            }, {
+                name: '客流指数',
+                value: 0.11
+            }, {
+                name: '经济指数',
+                value: 0.1
+            }, {
+                name: '人口指数',
+                value: 0.13
+            }]
+        }, {
+            name: '沙井',
+            value: 1.19,
+            children: [{
+                name: '业态指数',
+                value: 0.14
+            }, {
+                name: '拥堵指数',
+                value: 0.1
+            }, {
+                name: '活力指数',
+                value: 0.14
+            }, {
+                name: '联系指数',
+                value: 0.11
+            }, {
+                name: '可达性指数',
+                value: 0.08
+            }, {
+                name: '客流指数',
+                value: 0.11
+            }, {
+                name: '经济指数',
+                value: 0.13
+            }, {
+                name: '人口指数',
+                value: 0.18
+            }]
+        }, {
+            name: '松岗',
+            value: 0.89,
+            children: [{
+                name: '业态指数',
+                value: 0.18
+            }, {
+                name: '拥堵指数',
+                value: 0.08
+            }, {
+                name: '活力指数',
+                value: 0.13
+            }, {
+                name: '联系指数',
+                value: 0.09
+            }, {
+                name: '可达性指数',
+                value: 0.06
+            }, {
+                name: '客流指数',
+                value: 0.09
+            }, {
+                name: '经济指数',
+                value: 0.11
+            }, {
+                name: '人口指数',
+                value: 0.15
+            }]
+        }, {
+            name: '观澜',
+            value: 0.6,
+            children: [{
+                name: '业态指数',
+                value: 0.09
+            }, {
+                name: '拥堵指数',
+                value: 0.06
+            }, {
+                name: '活力指数',
+                value: 0.08
+            }, {
+                name: '联系指数',
+                value: 0.07
+            }, {
+                name: '可达性指数',
+                value: 0.05
+            }, {
+                name: '客流指数',
+                value: 0.07
+            }, {
+                name: '经济指数',
+                value: 0.08
+            }, {
+                name: '人口指数',
+                value: 0.1
+            }]
+        }, {
+            name: '平湖',
+            value: 0.37,
+            children: [{
+                name: '业态指数',
+                value: 0.06
+            }, {
+                name: '拥堵指数',
+                value: 0.03
+            }, {
+                name: '活力指数',
+                value: 0.05
+            }, {
+                name: '联系指数',
+                value: 0.04
+            }, {
+                name: '可达性指数',
+                value: 0.03
+            }, {
+                name: '客流指数',
+                value: 0.04
+            }, {
+                name: '经济指数',
+                value: 0.05
+            }, {
+                name: '人口指数',
+                value: 0.07
+            }]
+        }, {
+            name: '布吉',
+            value: 0.91,
+            children: [{
+                name: '业态指数',
+                value: 0.16
+            }, {
+                name: '拥堵指数',
+                value: 0.08
+            }, {
+                name: '活力指数',
+                value: 0.12
+            }, {
+                name: '联系指数',
+                value: 0.09
+            }, {
+                name: '可达性指数',
+                value: 0.07
+            }, {
+                name: '客流指数',
+                value: 0.1
+            }, {
+                name: '经济指数',
+                value: 0.12
+            }, {
+                name: '人口指数',
+                value: 0.17
+            }]
+        }, {
+            name: '横岗',
+            value: 0.61,
+            children: [{
+                name: '业态指数',
+                value: 0.09
+            }, {
+                name: '拥堵指数',
+                value: 0.06
+            }, {
+                name: '活力指数',
+                value: 0.08
+            }, {
+                name: '联系指数',
+                value: 0.07
+            }, {
+                name: '可达性指数',
+                value: 0.05
+            }, {
+                name: '客流指数',
+                value: 0.07
+            }, {
+                name: '经济指数',
+                value: 0.08
+            }, {
+                name: '人口指数',
+                value: 0.11
+            }]
+        }, {
+            name: '葵涌',
+            value: 0.21,
+            children: [{
+                name: '业态指数',
+                value: 0.02
+            }, {
+                name: '拥堵指数',
+                value: 0.02
+            }, {
+                name: '活力指数',
+                value: 0.04
+            }, {
+                name: '联系指数',
+                value: 0.02
+            }, {
+                name: '可达性指数',
+                value: 0.02
+            }, {
+                name: '客流指数',
+                value: 0.02
+            }, {
+                name: '经济指数',
+                value: 0.03
+            }, {
+                name: '人口指数',
+                value: 0.04
+            }]
+        }];
+
+    dtlData[0].children.forEach(item => {
+        num1 += item.value
+    })
+    console.log(num1);
+    var mapping = {
+        '人口指数': '人口指数',
+        '客流指数': '客流指数',
+        '联系指数': '联系指数',
+        '业态指数': '业态指数',
+        '活力指数': '活力指数',
+        '经济指数': '经济指数',
+        '拥堵指数': '拥堵指数',
+        '可达性指数': '可达性指数'
+    };
+
+
+    var color = [
+        "#0a58b6",
+        "#4f8bc8",
+        "#3d6aac",
+        "#4c4bb4",
+        "#074b83",
+        "#0f4382",
+        "#2479c6",
+        "#3387c3",
+        "#3698ba",
+        "#43a1d0",
+        "#6889d4",
+        "#3461b9",
+        "#2239ad",
+        "#0052a3",
+        "#006ecd"
+    ];
+
+    var bsLine = [];
+    var bsLineV = {};
+    for (var key in dtlData) {
+        bsLine.push(dtlData[key].name);
+        bsLineV[dtlData[key].name] = dtlData[key].value;
+    }
+    var sbsLineV = Object.keys(bsLineV).sort(function (a, b) {
+        return -(bsLineV[a] - bsLineV[b]);
+    });
+
+
+    // 层级样式
+    function getLevelOption1() {
+        return [{
+            color: color,
+            itemStyle: {
+                normal: {
+                    borderWidth: 0,
+                    borderColor: '#fff',
+                    gapWidth: 2
+                }
+            }
+        },
+        {
+            //colorSaturation: [0.35, 0.6],
+            colorAlpha: [1, 0.5],
+            upperLabel: {
+                normal: {
+                    color: '#555555',
+                    show: true,
+                    height: 30
+                }
+            },
+            itemStyle: {
+                normal: {
+                    borderWidth: 5,
+                    borderColor: '#EFEFEF',
+                    gapWidth: 1
+                },
+                emphasis: {
+                    borderColor: '#ccc'
+                }
+            }
+        }
+        ];
+    }
+
+
+    function getLevelOption2() {
+        return [{
+            itemStyle: {
+                normal: {
+                    borderWidth: 0,
+                    borderColor: '#fff',
+                    gapWidth: 2
+                }
+            }
+        },
+        {
+            color: [],
+            //colorSaturation: [0.35, 0.6],
+            //colorAlpha: [0.5, 1],
+            //colorMappingBy: 'value',
+            upperLabel: {
+                normal: {
+                    color: '#555555',
+                    show: true,
+                    height: 30
+                }
+            },
+            itemStyle: {
+                normal: {
+                    borderWidth: 5,
+                    borderColor: '#EFEFEF',
+                    gapWidth: 1
+                },
+                emphasis: {
+                    borderColor: '#ccc'
+                }
+            }
+        }
+        ];
+    }
+
+    var series0 = {
+        name: '数据库',
+        type: 'treemap',
+        width: '90%',
+        itemStyle: {
+            normal: {
+                borderColor: '#fff'
+            }
+        },
+        levels: getLevelOption1(),
+        leafDepth: 2,
+        data: dtlData,
+        breadcrumb: {
+            show: false
+        },
+    };
+    let option = {
+        tooltip: {
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (info) {
+                var value = info.value;
+                var treePathInfo = info.treePathInfo;
+                var treePath = [];
+
+                for (var i = 1; i < treePathInfo.length; i++) {
+                    treePath.push(treePathInfo[i].name);
+                }
+
+                var nodeCN = '';
+                if (treePath.length == 2) {
+                    treePath[1] = mapping[treePath[1]];
+                }
+
+                return [
+                    '<div class="tooltip-title" style="color:#fff">' + `<span>${info.marker}</span>` + formatUtil.encodeHTML(treePath.join(' - ')) + '</div>',
+                    `<p  style="color:#fff;margin-left:14px">表数量: ${formatUtil.addCommas(value)}</p>`,
+                ].join('');
+            }
+        },
+        series: [series0]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

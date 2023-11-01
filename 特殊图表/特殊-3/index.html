@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "month_dt": "202009",
+            "scbd_id": "11",
+            "name": "福田罗湖",
+            "quantityindex": 0.58,
+            "qualityindex": 0.59,
+            "compositeindex": 0.58,
+            "hid": 46,
+            "version": "1000",
+            "color": "#4f8bc8"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "22",
+            "name": "光明",
+            "quantityindex": 0.15,
+            "qualityindex": 0.11,
+            "compositeindex": 0.13,
+            "hid": 47,
+            "version": "1000",
+            "color": "#0f4382"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "37",
+            "name": "横岗",
+            "quantityindex": 0.09,
+            "qualityindex": 0.07,
+            "compositeindex": 0.08,
+            "hid": 48,
+            "version": "1000",
+            "color": "#43a1d0"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "36",
+            "name": "布吉",
+            "quantityindex": 0.13,
+            "qualityindex": 0.1,
+            "compositeindex": 0.11,
+            "hid": 49,
+            "version": "1000",
+            "color": "#3387c3"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "24",
+            "name": "坪山",
+            "quantityindex": 0.02,
+            "qualityindex": 0.02,
+            "compositeindex": 0.02,
+            "hid": 50,
+            "version": "1000",
+            "color": "#0052a3"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "34",
+            "name": "观澜",
+            "quantityindex": 0.08,
+            "qualityindex": 0.07,
+            "compositeindex": 0.08,
+            "hid": 52,
+            "version": "1000",
+            "color": "#6889d4"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "31",
+            "name": "航空城",
+            "quantityindex": 0.11,
+            "qualityindex": 0.14,
+            "compositeindex": 0.13,
+            "hid": 53,
+            "version": "1000",
+            "color": "#2479c6"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "35",
+            "name": "平湖",
+            "quantityindex": 0.05,
+            "qualityindex": 0.04,
+            "compositeindex": 0.05,
+            "hid": 54,
+            "version": "1000",
+            "color": "#3461b9"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "23",
+            "name": "龙岗",
+            "quantityindex": 0.26,
+            "qualityindex": 0.23,
+            "compositeindex": 0.24,
+            "hid": 55,
+            "version": "1000",
+            "color": "#4c4bb4"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "25",
+            "name": "盐田",
+            "quantityindex": 0.03,
+            "qualityindex": 0.03,
+            "compositeindex": 0.03,
+            "hid": 56,
+            "version": "1000",
+            "color": "#2239ad"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "38",
+            "name": "葵涌",
+            "quantityindex": 0.03,
+            "qualityindex": 0.03,
+            "compositeindex": 0.03,
+            "hid": 57,
+            "version": "1000",
+            "color": "#006ecd"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "32",
+            "name": "沙井",
+            "quantityindex": 0.14,
+            "qualityindex": 0.11,
+            "compositeindex": 0.12,
+            "hid": 58,
+            "version": "1000",
+            "color": "#074b83"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "21",
+            "name": "龙华",
+            "quantityindex": 0.35,
+            "qualityindex": 0.3,
+            "compositeindex": 0.32,
+            "hid": 59,
+            "version": "1000",
+            "color": "#3d6aac"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "33",
+            "name": "松岗",
+            "quantityindex": 0.13,
+            "qualityindex": 0.1,
+            "compositeindex": 0.11,
+            "hid": 60,
+            "version": "1000",
+            "color": "#3698ba"
+        },
+        {
+            "month_dt": "202009",
+            "scbd_id": "12",
+            "name": "前海宝安",
+            "quantityindex": 0.85,
+            "qualityindex": 0.8,
+            "compositeindex": 0.82,
+            "hid": 51,
+            "version": "1000",
+            "color": "#0a58b6"
+        }
+    ]
+    let initValu = 1 / 2;
+    let seriesData = newData.map(function (item, index, array) {
+        return {
+            name: item["name"],
+            //实际点的参数
+            value: [item["quantityindex"], item["qualityindex"], item['compositeindex']],
+        };
+    });
+    let colorList = ['#4f8bc8', "#0f4382", "#43a1d0", "#3387c3", "#0052a3", "#6889d4", "#2479c6", "#3461b9", "#4c4bb4", "#2239ad", "#006ecd", "#074b83", "#3d6aac", "#3698ba", "#0a58b6"]
+
+    let option = {
+        tooltip: {
+            confine: true,
+            // position: 'right',
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1)',
+            trigger: "item",
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderWidth: 0,
+            formatter: function (obj) {
+                console.log(obj, 'xxx');
+                if (obj.componentType == "series") {
+                    return `<div style="color:#ffff;padding:0 5px 0 5px;">
+                        <p style="line-height:20px;color:#ffff">${obj.marker} 区<span style="margin-left:28px;">域: </span><span style="font-family:dinc;margin-left:10px;font-size:15px">${obj.name}</span></p>
+                        <p  style="line-height:20px;color:#ffff">${obj.marker} 数量指数: <span style="font-family:dinc;margin-left:10px;font-size:18px">${obj.value[0]}</span></p>
+                        <p  style="line-height:20px;color:#ffff">${obj.marker} 质量指数: <span style="font-family:dinc;margin-left:10px;font-size:18px">${obj.value[1]}</span></p>
+                        <p  style="line-height:20px;color:#ffff">${obj.marker} 综合指数: <span style="font-family:dinc;margin-left:10px;font-size:18px">${obj.value[2]}</span></p>
+                        </div>
+                        `;
+                }
+            },
+        },
+        grid: {
+            top: '10%',
+            bottom: '17%',
+            left: '10%',
+            right: '5%',
+            height: '73%'
+        },
+        label: {
+            fontSize: 8,
+            show: true,
+            formatter: function (params) {
+                return '{color1|' + params.name + '}'
+            },
+            rich: {
+                color1: {
+                    color: '#fff'
+                },
+
+            }
+
+            // color: '#fff',
+        },
+        xAxis: {
+            min: 0,
+            max: 1,
+            axisLine: {
+                lineStyle: {
+                    color: "#fff",
+                    opacity: '0.6',
+                }
+            },
+            axisLabel: {
+                // margin: 15,
+                textStyle: {
+                    color: '#fff',
+                    opacity: '0.6',
+                    fontFamily: 'dinc',
+                    fontSize: '15'
+                }
+            },
+            axisTick: {
+                lineStyle: {
+                    color: "#fff",
+                    opacity: '0.6',
+                }
+            },
+            // name:"销售毛利率",
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            splitArea: {
+                show: true,
+                areaStyle: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            max: 1,
+            // name:"订单成本",
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    type: 'dashed'
+                }
+            },
+            axisLabel: {
+                margin: 15,
+                textStyle: {
+                    color: '#fff',
+                    opacity: '0.6',
+                    fontFamily: 'dinc',
+                    fontSize: '15'
+                }
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+        },
+        series: [{
+
+            type: "scatter",
+            // width: '100%',
+            data: seriesData,
+            symbolSize: function (data, index) {
+                return Math.sqrt(data[0]) / 4e1 * 2000;
+            },
+            itemStyle: {
+                color: function (params) {
+                    // console.log();
+                    return colorList[params.dataIndex]
+                },
+            },
+
+            label: {
+                normal: {
+                    color: '#ffff',
+                    textStyle: {
+                        fontSize: '12'
+                    },
+                }
+            },
+            markLine: {
+                symbol: ['none', 'none'],
+                data: [{
+                    // silent: true,
+                    xAxis: initValu,
+                    // name: "营业额平均线",
+                    lineStyle: { //警戒线的样式 ，虚实 颜色
+                        type: "dashed", //样式  ‘solid’和'dotted'
+                        color: "#fff",
+                        opacity: '0.6',
+                        width: 1, //宽度,
+                    },
+                    tooltip: { show: false }
+                },
+                {
+                    silent: true,
+                    yAxis: initValu,
+                    // name: "服务能力平均线",
+                    lineStyle: { //警戒线的样式 ，虚实 颜色
+                        type: "dashed", //样式  ‘solid’和'dotted'
+                        color: "#fff",
+                        opacity: '0.6',
+                        width: 1 //宽度
+                    },
+
+                },
+                ],
+            },
+        },],
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>

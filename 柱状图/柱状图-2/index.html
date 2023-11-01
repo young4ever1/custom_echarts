@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/echarts.min.js"></script>
+    <script src="../../js/echartsFn.js"></script>
+    <script src="../../js/itemResize.js"></script>
+    <script src="../../js/jquery.js"></script>
+</head>
+
+<body>
+    <div id="echarts_one"></div>
+</body>
+<script>
+    let echarts_one = document.getElementById('echarts_one');
+    let newData = [
+        {
+            "name": "福田交通枢纽",
+            "value": [
+                3811,
+                5670
+            ],
+            "valueAvg": 4731
+        },
+        {
+            "name": "紫竹六道",
+            "value": [
+                3800,
+                3214
+            ]
+        },
+        {
+            "name": "招商银行大厦3",
+            "value": [
+                4564,
+                4787
+            ]
+        },
+        {
+            "name": "东海实验小学",
+            "value": [
+                3920,
+                5508
+            ]
+        },
+        {
+            "name": "竹子林1",
+            "value": [
+                3400,
+                5660
+            ]
+        },
+        {
+            "name": "深圳人才园1",
+            "value": [
+                7480,
+                8023
+            ]
+        },
+        {
+            "name": "深圳风湿病医院",
+            "value": [
+                3978,
+                5670
+            ]
+        },
+        {
+            "name": "深航大厦1",
+            "value": [
+                3200,
+                4902
+            ]
+        },
+        {
+            "name": "高级中学南校区",
+            "value": [
+                4590,
+                4250
+            ]
+        }
+    ];
+    var valueAvg1 = newData[0].valueAvg
+    // var newData = e.a.map((item, index) => {
+    //     return {
+    //         name: item.name,
+    //         value: [item.value[0] >= valueAvg1 ? valueAvg1 : item.value[0], item.value[1] >= valueAvg1 ? valueAvg1 : item.value[1]]
+    //     }
+    // })
+
+    var index = 0;
+    var newList = newData.map((item, index) => {
+        return {
+            value: [item.value[0] > valueAvg1 ? item.value[0] - valueAvg1 : 0, item.value[1] > valueAvg1 ? item.value[1] - valueAvg1 : 0]
+        }
+    })
+    var listArr1 = [];
+    newList.forEach(item => {
+        listArr1.push(item.value[0]);
+    })
+
+    var newListArr1 = listArr1.sort((a, b) => {
+        return b - a;
+    })
+    // console.log(newListArr, 'xxxx');
+    var chartMax1 = newListArr1[0] + valueAvg1;
+
+
+    var xName = newData.filter((item, index) => {
+        return item.value[0] === chartMax1
+    })
+
+    console.log(xName[0].name);
+
+
+    var listArr2 = [];
+    newList.forEach(item => {
+        listArr2.push(item.value[1]);
+    })
+    var newListArr2 = listArr2.sort((a, b) => {
+        return b - a;
+    })
+    // console.log(newListArr, 'xxxx');
+    var chartMax2 = newListArr2[0] + valueAvg1;
+
+
+    var xName2 = newData.filter((item, index) => {
+        return item.value[1] === chartMax2
+    })
+
+    var getData = newData.map((item, index) => {
+        return {
+            name: item.name,
+            value: [item.value[0] >= valueAvg1 ? valueAvg1 : item.value[0], item.value[1] >= valueAvg1 ? valueAvg1 : item.value[1]]
+        }
+    })
+
+    let option = {
+        // backgroundColor: "#344b58",
+        // legend:{
+
+        // },
+        "tooltip": {
+            "trigger": "axis",
+            "axisPointer": {
+                "type": "shadow",
+                textStyle: {
+                    color: "#fff"
+                }
+            },
+            extraCssText: 'box-shadow : 0 0 8px rgba(22, 156, 241, 1);color:#fff;padding:5px 20px 5px 20px;line-height:30px',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            borderRadius: 5,
+            borderWidth: 0,
+            formatter: function (params) {
+
+                params[0].value = params[0].value === valueAvg1 ? params[0].value + params[1].value : params[0].value
+                params[2].value = params[2].value === valueAvg1 ? params[2].value + params[3].value : params[2].value
+                // console.log(params[0].value, params[2].value);
+                oneNum = params[0].value;
+                twoNum = params[2].value
+                return `<p>${params[0].name}</p>
+                     <p>${params[0].marker} ${params[0].seriesName}: <span style="font-family:dinc;font-size:18px">${params[0].value}</span></p>
+                     <p>${params[2].marker} ${params[2].seriesName}: <span style="font-family:dinc;font-size:18px">${params[2].value}</span></p>
+                    `
+            }
+        },
+        "grid": {
+            top: '15%',
+            left: '15%',
+            right: '10%',
+            bottom: '15%',
+        },
+        "calculable": true,
+        "xAxis": [{
+            // interval:true,
+            "type": "category",
+            "axisLine": {
+                lineStyle: {
+                    color: '#fff',
+                    opacity: 0.38
+                }
+            },
+            "splitLine": {
+                "show": false
+            },
+            "axisTick": {
+                "show": false
+            },
+            "splitArea": {
+                "show": false
+            },
+            "axisLabel": {
+                // "interval": 0,
+                color: 'rgba(255,255,255,0.7)',
+                fontSize: 15
+            },
+            "data": newData.map(item => {
+                return {
+                    value: item.name
+                }
+            }),
+        }],
+        yAxis: {
+            // type: 'category',
+            // name: "单位:次",
+            axisLabel: {
+                color: '#fff',
+                fontSize: 15,
+                fontFamily: 'dinc',
+                interval: 0,
+                formatter: function (params) {
+                    if (index === 0) {
+                        return [
+                            params + '  ' + '{b|}'
+                        ].join('\n')
+                    }
+                },
+                // "margin": -100,
+                rich: {
+                    b: {
+                        width: 8,
+                        height: 8,
+                        backgroundColor: {
+                            image: '../image/sj.png'
+                        }
+                    }
+                }
+            },
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    color: '#3d5269'
+                }
+            },
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#fff',
+                    opacity: 0.38,
+                    type: 'dashed'
+                }
+            },
+        },
+        "series": [
+            {
+                "name": "上车",
+                "type": "bar",
+                "stack": "总量",
+                "barMaxWidth": 20,
+                "barGap": "10%",
+                "itemStyle": {
+                    "normal": {
+                        "color":
+                        {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'rgba(0, 252, 255, 1)' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'rgba(49, 160, 255, 0)' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        },
+                        // label: {
+                        //     show: true,
+                        //     position: 'top',
+                        //     distance: 2,
+                        //     padding: 3,
+                        //     color: '#FFF',
+                        //     fontSize: 14,
+                        //     // data:[123]
+                        // },
+                    },
+                },
+                "data": getData.map(item => {
+                    return {
+                        value: item.value[1]
+                    }
+                }),
+                markPoint: {
+                    symbolSize: 50,
+                    itemStyle: {
+                        color: '#f00',
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    data: chartMax2 > valueAvg1 ? [
+                        { value: '报警', xAxis: xName[0].name, yAxis: chartMax2 },
+                    ] : []
+                },
+                markLine: { //数据标准线
+                    symbol: ['none', 'none'],
+                    data: [{
+                        name: '标准值为5',
+                        yAxis: newData[0].valueAvg
+                    }],
+                    label: {
+                        normal: {
+                            show: true,
+                        }
+                    },
+                    lineStyle: {
+                        normal: {
+                            color: 'rgba(255, 87, 29, 1)',
+                            width: 1
+                        }
+                    },
+                },
+                // markPoint: {
+                //     symbolSize: 55,
+                //     label: {
+                //         color: '#ffff',//气泡中字体颜色,
+
+                //     },
+                //     itemStyle: {
+                //         color: '#f00',
+
+                //     },
+                //     data: chartMax1 > valueAvg1 ? [
+                //         { value: '报警', xAxis: xName[0].name, yAxis: chartMax1 },
+                //     ] : []
+
+                // },
+            },
+            {
+                // "name": "男",
+
+                "type": "bar",
+                "stack": "总量",
+                "itemStyle": {
+                    "normal": {
+                        "color": {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: '#FF6F5C' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#FF6F5C' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        },
+                        "barBorderRadius": 0
+                    }
+                },
+
+                "data": newList.map(item => {
+                    return {
+                        value: item.value[1]
+                    }
+                }),
+                // label: {
+                //     show: true,
+                //     position: 'top',
+                //     distance: 6,
+                //     padding: 10,
+                //     color: '#f00',
+                //     fontSize: 14,
+                //     formatter: function (params) {
+                //         // let newArr = [];
+                //         // newArr.push(params);
+                //         // console.log(newArr);
+                //         // let a = [1, 2, 3, 4, 5]
+                //         // for (let i = 0; i < a.length; i++) {
+                //         //     newArr[i]params.value = a[i];
+                //         // }
+                //         // console.log(params.value + 1)
+                //         getData.forEach(item => {
+                //             console.log(item.value[0]);
+                //             // return item.value[0]
+                //         });
+                //         // return params.value + a
+                //         // console.log(params,'xxx');
+                //         // = 1;
+                //         // function a() {
+                //         //     let num = [];
+                //         //     getData.forEach(item => {
+                //         //         num.push(item.value[0]);
+                //         //     })
+                //         //     return num;
+                //         // }
+                //         // console.log(a());
+                //     }
+                // },
+            },
+            {
+
+                "name": "下车",
+                "type": "bar",
+                "stack": "总量1",
+                "barMaxWidth": 20,
+                "barGap": "40%",
+                "itemStyle": {
+                    "normal": {
+                        "color":
+                        {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: 'rgba(255, 250, 118, 1)' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: 'rgba(255, 153, 118, 0)' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                    }
+                },
+
+                "data": getData.map(item => {
+                    return {
+                        value: item.value[0]
+                    }
+                })
+            },
+            {
+                // "name": "男",
+
+                "type": "bar",
+                "stack": "总量1",
+                "itemStyle": {
+                    "normal": {
+                        "color": {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: '#FF6F5C' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#FF6F5C' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        },
+                        "barBorderRadius": 0
+                    }
+                },
+
+                "data": newList.map(item => {
+                    return {
+                        value: item.value[0]
+                    }
+                })
+            },
+
+        ]
+    }
+
+    // * get instance init
+    let echartsInstance = initDom(echarts_one, option);
+    window.addEventListener('resize', () => {
+        echartsInstance.resize();
+        window.location.reload();
+    })
+</script>
+
+</html>
